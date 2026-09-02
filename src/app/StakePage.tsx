@@ -1,0 +1,167 @@
+import { useMemo, useState } from 'react';
+import { useOutletContext } from 'react-router';
+import { ChartPie, Coins, Star, Wallet } from 'lucide-react';
+import { AmountField, Badge, Bento, Button, Tabs } from '@/ui';
+import { useStore } from '@/chain/store';
+import { instantUnstakeOut, nativeUnstakeOut, validateAmount, varaToTide } from '@/domain/math';
+import { bpsToPercent, formatCompactUsd, formatCountdown, formatRate, formatUsd, formatVara, parseVara, toNumber } from '@/domain/format';
+import { VARA_DECIMALS } from '@/domain/protocol';
+import { Eyebrow, IRow, useNow } from './bits';
+import type { AppOutlet } from './AppLayout';
+
+type Tab = 'Stake' | 'Unstake';
+type Path = 'instant' | 'native';
+
+function ExitOption({ title, sub, active, onClick }: { title: string; sub: string; active: boolean; onClick: () => void }) {
+  return (
+    <button type="button" className="ap-exit" aria-pressed={active} onClick={onClick}>
+      <div className="ap-exit-t">{title}</div>
+      <div className="ap-exit-s">{sub}</div>
+    </button>
+  );
+}
+
+const REASON: Record<string, string> = { invalid: 'Enter a valid amount', zero: 'Amount must be more than zero', insufficient: 'Not enough balance' };
+
+export function StakePage() {
+  const { openWallet } = useOutletContext<AppOutlet>();
+  const { stats, statsError, balances, balancesError, account, adapter, tx, run } = useStore();
+  const [tab, setTab] = useState<Tab>('Stake');
+  const [amt, setAmt] = useState('');
+  const [path, setPath] = useState<Path>('instant');
+  const [touched, setTouched] = useState(false);
+  const now = useNow();
+  const switchTab = (t: Tab) => { setTab(t); setAmt(''); setTouched(false); };
+
+  const rate = stats?.rate ?? null;
+  const parsed = useMemo(() => parseVara(amt), [amt]);
+  const bal = tab === 'Stake' ? balances?.VARA ?? 0n : balances?.tideVARA ?? 0n;
+  const validation = validateAmount(amt, parsed, balances ? bal : null);
+  const error = touched && !validation.ok && validation.reason !== 'empty' ? REASON[validation.reason] : undefined;
+
+  const out = useMemo(() => {
+    if (!rate || !parsed) return { main: 0n, fee: 0n };
+    if (tab === 'Stake') return { main: varaToTide(parsed, rate), fee: 0n };
+    if (path === 'instant') { const r = instantUnstakeOut(parsed, rate); return { main: r.net, fee: r.fee }; }
+    return { main: nativeUnstakeOut(parsed, rate), fee: 0n };
+  }, [rate, parsed, tab, path]);
+
+  const price = stats?.varaPriceUsd ?? 0;
+  const usd = (v: bigint) => formatUsd(toNumber(v, VARA_DECIMALS) * price);
+  const busy = tx.stage === 'broadcast';
+
+  const act = async () => {
+    if (!account) { openWallet(); return; }
+    setTouched(true);
+    if (!validation.ok || !parsed || !rate) return;
+    const a = parsed;
+    let ok = false;
+    if (tab === 'Stake') {
+      ok = await run('Stake', (addr) => adapter.stake(addr, a), { title: `Staked ${formatVara(a)} VARA`, detail: `You received ${formatVara(out.main)} tideVARA at rate ${formatRate(rate)}.` });
+    } else if (path === 'instant') {
+      ok = await run('Instant unstake', (addr) => adapter.unstakeInstant(addr, a), { title: 'Unstaked instantly', detail: `${formatVara(out.main)} VARA received · 0.3% fee applied.` });
+    } else {
+      ok = await run('Native unbond', (addr) => adapter.unstakeNative(addr, a), { title: 'Unbond started', detail: `${formatVara(out.main)} VARA claimable in 7 days at full rate.` });
+    }
+    if (ok) { setAmt(''); setTouched(false); }
+  };
+
+  const label = !account ? 'Connect wallet' : tab === 'Stake' ? 'Stake' : path === 'instant' ? 'Unstake instantly' : 'Start unbond';
+
+  return (
+    <div className="ap-stake">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'var(--surface-card)', border: '1px solid var(--line-1)', borderRadius: 16, padding: '12px 18px', flexWrap: 'wrap' }}>
+          <span style={{ width: 30, height: 30, borderRadius: 99, background: 'var(--surface-raised)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-2)' }}><Wallet size={14} strokeWidth={1.5} /></span>
+          <span style={{ fontSize: 13.5, color: 'var(--text-2)' }}>Wallet balance</span>
+          {account ? (
+            balancesError ? <span style={{ marginLeft: 'auto', fontSize: 13, color: 'var(--danger)' }}>{balancesError}</span> : (
+              <span className={balances ? undefined : 'skeleton'} style={{ marginLeft: 'auto', fontFamily: 'var(--font-mono)', fontSize: 14, minWidth: balances ? undefined : 140 }}>
+                {balances ? <>{formatVara(balances.VARA)} VARA <span style={{ color: 'var(--text-3)' }}>( {usd(balances.VARA)} )</span></> : '0.00'}
+              </span>
+            )
+          ) : (
+            <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--text-3)' }}>— VARA</span>
+          )}
+        </div>
+
+        <Bento variant="app" pad={24}>
+          <Tabs<Tab> items={['Stake', 'Unstake']} active={tab} onChange={switchTab} />
+          <div style={{ marginTop: 16 }}>
+            <AmountField
+              label={tab === 'Stake' ? 'You stake' : 'You unstake'}
+              token={tab === 'Stake' ? 'VARA' : 'tideVARA'}
+              balance={balances ? formatVara(bal) : undefined}
+              value={amt}
+              onChange={(v) => { setAmt(v); setTouched(true); }}
+              onMax={balances ? () => { setAmt(formatVara(bal, VARA_DECIMALS).replace(/,/g, '').replace(/\.?0+$/, '')); setTouched(true); } : undefined}
+              fiat={parsed && rate ? `≈ ${usd(tab === 'Stake' ? parsed : nativeUnstakeOut(parsed, rate))}` : ''}
+              error={error}
+              disabled={busy}
+            />
+          </div>
+          {tab === 'Unstake' && (
+            <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+              <ExitOption title="Instant" sub="~0.3% fee · now" active={path === 'instant'} onClick={() => setPath('instant')} />
+              <ExitOption title="Native unbond" sub="free · 7 days" active={path === 'native'} onClick={() => setPath('native')} />
+            </div>
+          )}
+          <div style={{ margin: '10px 0 14px' }}>
+            <IRow icon={<ChartPie size={14} strokeWidth={1.5} />} k="Position" v={balances ? `${formatVara(balances.tideVARA)} tideVARA` : account ? '…' : '—'} loading={!!account && !balances} />
+            <IRow icon={<Star size={14} strokeWidth={1.5} />} k="APY" v={stats ? bpsToPercent(stats.stakeApyBps) : '…'} accent loading={!stats} />
+            <IRow icon={<Coins size={14} strokeWidth={1.5} />} k="You receive" v={`${formatVara(out.main)} ${tab === 'Stake' ? 'tideVARA' : 'VARA'}`} />
+            {tab === 'Unstake' && path === 'instant' && parsed ? <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11.5, color: 'var(--text-3)', textAlign: 'right', marginTop: -6 }}>fee {formatVara(out.fee, 4)} VARA</div> : null}
+          </div>
+          <Button size="xl" block disabled={!!account && !validation.ok} loading={busy} onClick={act}>
+            {busy ? 'Confirm in your wallet…' : label}
+          </Button>
+          {tx.stage === 'finalized' && tx.result && (
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-3)', marginTop: 10, textAlign: 'center' }}>tx {tx.result.hash.slice(0, 10)}… included in block {tx.result.blockNumber?.toLocaleString('en-US')}</div>
+          )}
+        </Bento>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div className="ap-grid-2">
+          <div style={{ borderRadius: 20, background: 'var(--tide-400)', padding: '18px 18px 20px', boxShadow: '0 18px 44px -18px rgba(163,164,255,.45)' }}>
+            <div className="eyebrow" style={{ fontSize: 10.5, color: 'rgba(27,23,38,.65)' }}>TVL</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 27, color: '#1B1726', marginTop: 6 }}>{stats ? formatCompactUsd(stats.tvlUsd) : '…'}</div>
+          </div>
+          <Bento variant="app" pad={18}>
+            <Eyebrow>APY</Eyebrow>
+            <div className="grad-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 27, marginTop: 6 }}>{stats ? bpsToPercent(stats.stakeApyBps) : '…'}</div>
+          </Bento>
+        </div>
+        <Bento variant="app" pad={20}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: 15, fontWeight: 600, fontFamily: 'var(--font-display)' }}>Next compound</span>
+            <Badge size="sm" tone="info">era {stats ? stats.era.toLocaleString('en-US') : '—'}</Badge>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginTop: 10 }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 25 }}>{stats ? formatCountdown(stats.eraEndsAt - now) : '…'}</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11.5, color: 'var(--text-3)' }}>rate {stats ? formatRate(stats.rate) : '—'}</span>
+          </div>
+          <div style={{ position: 'relative', margin: '26px 4px 6px' }}>
+            <div style={{ position: 'absolute', left: 0, right: 0, top: 5, height: 2, background: 'var(--ink-700)', borderRadius: 2 }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
+              {(stats?.rateHistory ?? [0, 1, 2].map((i) => ({ era: i, rate: 0n }))).map((h, i, arr) => {
+                const hot = i === arr.length - 1;
+                return (
+                  <div key={h.era} style={{ textAlign: 'center', position: 'relative' }}>
+                    {hot && stats ? <span style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: -26, fontFamily: 'var(--font-mono)', fontSize: 10.5, background: 'var(--surface-raised)', border: '1px solid var(--accent-line)', borderRadius: 7, padding: '2px 7px', color: 'var(--tide-300)', whiteSpace: 'nowrap' }}>{formatRate(h.rate)}</span> : null}
+                    <div style={{ width: 12, height: 12, borderRadius: 99, margin: '0 auto', background: hot ? 'var(--tide-400)' : 'var(--ink-600)', boxShadow: hot ? '0 0 12px rgba(163,164,255,.9)' : 'none', border: '2px solid var(--ink-800)' }} />
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-3)', marginTop: 7 }}>era {stats ? h.era.toLocaleString('en-US') : '—'}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </Bento>
+        {statsError && <p role="alert" style={{ fontSize: 13, color: 'var(--danger)', lineHeight: 1.5 }}>Protocol stats unavailable: {statsError}</p>}
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-3)', lineHeight: 1.6 }}>
+          {adapter.simulated ? 'Simulated protocol: figures are illustrative and nothing is sent on chain.' : 'Yield is embedded in the rate. Staking involves slashing risk.'}
+        </p>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,69 @@
+import { createBrowserRouter, RouterProvider, ScrollRestoration, Outlet, useRouteError } from 'react-router';
+import { StoreProvider } from '@/chain/store';
+import { LandingPage } from '@/landing/LandingPage';
+import { AppLayout } from '@/app/AppLayout';
+import { StakePage } from '@/app/StakePage';
+import { VaultsPage } from '@/app/VaultsPage';
+import { PortfolioPage } from '@/app/PortfolioPage';
+
+function Root() {
+  return (
+    <StoreProvider>
+      <ScrollRestoration />
+      <Outlet />
+    </StoreProvider>
+  );
+}
+
+function RouteError() {
+  const err = useRouteError();
+  const msg = err instanceof Error ? err.message : 'Something went wrong.';
+  return (
+    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', textAlign: 'center', padding: 24 }}>
+      <div>
+        <div className="eyebrow" style={{ color: 'var(--danger)', marginBottom: 12 }}>Error</div>
+        <h1 style={{ fontSize: 32, fontWeight: 600 }}>The app hit a problem.</h1>
+        <p className="mono" style={{ color: 'var(--text-2)', marginTop: 10, fontSize: 13 }}>{msg}</p>
+        <p style={{ marginTop: 16 }}><a href="/app">Reload the app</a></p>
+      </div>
+    </div>
+  );
+}
+
+function NotFound() {
+  return (
+    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', textAlign: 'center', padding: 24 }}>
+      <div>
+        <div className="eyebrow" style={{ color: 'var(--tide-400)', marginBottom: 12 }}>404</div>
+        <h1 style={{ fontSize: 40, fontWeight: 600 }}>Nothing here.</h1>
+        <p style={{ color: 'var(--text-2)', marginTop: 10 }}><a href="/">Back to tide</a></p>
+      </div>
+    </div>
+  );
+}
+
+export const routes = [
+  {
+    element: <Root />,
+    errorElement: <RouteError />,
+    children: [
+      { path: '/', element: <LandingPage /> },
+      {
+        path: '/app',
+        element: <AppLayout />,
+        children: [
+          { index: true, element: <StakePage /> },
+          { path: 'vaults', element: <VaultsPage /> },
+          { path: 'portfolio', element: <PortfolioPage /> },
+        ],
+      },
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+];
+
+const router = createBrowserRouter(routes);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
