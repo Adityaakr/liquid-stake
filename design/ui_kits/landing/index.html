@@ -1,0 +1,66 @@
+<!-- @dsCard group="Landing" viewport="1440x860" name="Tide — Landing page" subtitle="Marketing site, full scroll" --><!-- @startingPoint section="Screens" subtitle="Tide marketing landing" viewport="1440x900" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tide — Stake VARA. Stay liquid.</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+html{scroll-behavior:smooth}
+body{background:var(--bg-page)}
+.ld-link{color:var(--text-2);font-size:14px;font-weight:500;text-decoration:none;transition:color var(--dur-1) var(--ease-out)}
+.ld-link:hover{color:var(--text-1)}
+.ld-colhead{font-family:var(--font-mono);font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--text-3)}
+.bd-streak{position:absolute;width:72px;height:3px;border-radius:99px;background:linear-gradient(90deg,transparent,#BDBEFF 55%,#FFFFFF);box-shadow:0 0 14px rgba(189,190,255,.8);animation:bdMove 3.6s linear infinite;opacity:0}
+@keyframes bdMove{0%{transform:translateX(0);opacity:0}12%{opacity:1}85%{opacity:1}100%{transform:translateX(var(--d,260px));opacity:0}}
+.bd-fall{position:absolute;width:3px;height:64px;border-radius:99px;background:linear-gradient(180deg,transparent,#C6C7FF 60%,#FFFFFF);box-shadow:0 0 16px rgba(225,225,255,.9);animation:bdFall 3s linear infinite;opacity:0}
+@keyframes bdFall{0%{transform:translateY(0);opacity:0}15%{opacity:1}80%{opacity:1}100%{transform:translateY(170px);opacity:0}}
+.fw-arc{background:conic-gradient(from 0deg,transparent 0deg,transparent 252deg,rgba(178,140,255,.75) 322deg,transparent 342deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3.5px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 3.5px),#000 calc(100% - 2.5px));animation:fwspin 9s linear infinite}
+@keyframes fwspin{to{transform:rotate(360deg)}}
+details.ld-faq{border-bottom:1px solid var(--line-1)}
+details.ld-faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px 2px;cursor:pointer;font-size:16px;font-weight:500;color:var(--text-1);transition:color var(--dur-1) var(--ease-out)}
+details.ld-faq summary:hover{color:var(--tide-300)}
+details.ld-faq summary::-webkit-details-marker{display:none}
+details.ld-faq summary::after{content:'';width:8px;height:8px;min-width:8px;border-right:1.5px solid var(--text-3);border-bottom:1.5px solid var(--text-3);transform:rotate(45deg);transition:transform var(--dur-2) var(--ease-out);margin-right:4px}
+details.ld-faq[open] summary::after{transform:rotate(-135deg)}
+details.ld-faq p{color:var(--text-2);font-size:14.5px;max-width:70ch;padding:0 2px 20px;line-height:1.7;margin:0}
+.ld-row{transition:background var(--dur-1) var(--ease-out)}
+.ld-row:hover{background:rgba(163,164,255,.05)}
+.ld-stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1.5px 1.5px at 12% 22%,rgba(255,255,255,.4),transparent),radial-gradient(1px 1px at 78% 15%,rgba(255,255,255,.3),transparent),radial-gradient(1.2px 1.2px at 55% 45%,rgba(220,200,255,.35),transparent),radial-gradient(1px 1px at 30% 70%,rgba(255,255,255,.25),transparent),radial-gradient(1.4px 1.4px at 88% 60%,rgba(220,200,255,.3),transparent),radial-gradient(1px 1px at 65% 85%,rgba(255,255,255,.28),transparent),radial-gradient(1.2px 1.2px at 8% 88%,rgba(255,255,255,.22),transparent),radial-gradient(1px 1px at 42% 8%,rgba(255,255,255,.3),transparent)}
+.ld-row td{border-top:1px solid var(--line-1)}
+.ld-row:first-child td{border-top:none}
+</style>
+</head>
+<body id="top">
+<div id="root"></div>
+<script type="text/babel" src="Nav.jsx"></script>
+<script type="text/babel" src="Hero.jsx"></script>
+<script type="text/babel" src="Sections.jsx"></script>
+<script type="text/babel" src="Closing.jsx"></script>
+<script type="text/babel">
+function LandingPage(){
+React.useEffect(()=>{if(window.lucide)lucide.createIcons();},[]);
+const {LandingNav,Hero,StatsBand,HowItWorks,Flywheel,TokensTable,ExitPaths,Parameters,FAQ,CTABand,Footer}=window;
+return <div>
+<LandingNav/>
+<Hero/>
+<StatsBand/>
+<HowItWorks/>
+<Flywheel/>
+<TokensTable/>
+<ExitPaths/>
+<Parameters/>
+<FAQ/>
+<CTABand/>
+<Footer/>
+</div>;}
+ReactDOM.createRoot(document.getElementById('root')).render(<LandingPage/>);
+</script>
+</body>
+</html>

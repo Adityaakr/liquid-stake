@@ -1,0 +1,16 @@
+:root{
+/* elevation on dark = inner top light + deep soft drop */
+--shadow-card:inset 0 1px 0 rgba(242,240,255,.05),0 24px 60px -28px rgba(0,0,0,.65);
+--shadow-pop:inset 0 1px 0 rgba(242,240,255,.07),0 32px 80px -24px rgba(0,0,0,.8);
+/* glows */
+--glow-tide:0 0 44px -10px rgba(163,164,255,.55);
+--glow-surf:0 0 44px -10px rgba(225,225,255,.5);
+--glow-text:0 0 28px rgba(163,164,255,.4);
+--focus-ring:0 0 0 3px rgba(163,164,255,.35);
+/* textures */
+--dot-grid:radial-gradient(rgba(163,164,255,.16) 1px,transparent 1px);/* @kind other */
+--dot-grid-size:22px 22px;/* @kind other */
+/* motion */
+--ease-out:cubic-bezier(.22,.61,.36,1);/* @kind other */--ease-spring:cubic-bezier(.34,1.4,.4,1);/* @kind other */
+--dur-1:140ms;/* @kind other */--dur-2:260ms;/* @kind other */--dur-3:480ms;/* @kind other */
+}
