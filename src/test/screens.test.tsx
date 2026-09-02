@@ -11,7 +11,7 @@ import { PortfolioPage } from '@/app/PortfolioPage';
 import { VaultsPage } from '@/app/VaultsPage';
 import { Outlet } from 'react-router';
 
-function mount(path: string, adapter = new MockAdapter('testnet', { latencyMs: 0, storage: false })) {
+function mount(path: string, adapter = new MockAdapter('mainnet', { latencyMs: 0, storage: false })) {
   const router = createMemoryRouter(
     [
       {
@@ -74,7 +74,7 @@ describe('app', () => {
 
   it('unstake instant shows the fee and native shows 7 day copy', async () => {
     const user = userEvent.setup();
-    const adapter = new MockAdapter('testnet', { latencyMs: 0, storage: false });
+    const adapter = new MockAdapter('mainnet', { latencyMs: 0, storage: false });
     mount('/app', adapter);
     await connectDemo(user);
     await screen.findByText('1,240.52 VARA', { exact: false });

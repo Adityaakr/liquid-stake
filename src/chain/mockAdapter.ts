@@ -53,7 +53,7 @@ export class MockAdapter implements StakingAdapter {
   private latency: number;
   private t0 = Date.now();
 
-  constructor(readonly network: NetworkId = 'testnet', opts: { latencyMs?: number; storage?: boolean } = {}) {
+  constructor(readonly network: NetworkId = 'mainnet', opts: { latencyMs?: number; storage?: boolean } = {}) {
     this.latency = opts.latencyMs ?? 900;
     this.state = opts.storage === false ? { balances: {}, unbonding: {} } : load();
     this.persist = opts.storage === false ? () => {} : this.persist;

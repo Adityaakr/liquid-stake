@@ -20,13 +20,12 @@ node scripts/screenshots.mjs   # Playwright screenshots of every screen into ./s
 
 ## Configuration
 
-Copy `.env.example` to `.env`.
+Copy `.env.example` to `.env`. The app targets Vara mainnet; there is no testnet mode.
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `VITE_ADAPTER` | `mock` | `mock` runs a fully simulated protocol. `gear` reads native VARA balances from the chain. |
-| `VITE_VARA_TESTNET_RPC` | `wss://testnet.vara.network` | RPC used when the network is testnet. |
-| `VITE_VARA_MAINNET_RPC` | `wss://rpc.vara.network` | RPC used when the network is mainnet. |
+| `VITE_VARA_RPC` | `wss://rpc.vara.network` | Vara mainnet RPC. Point it at your own node if you run one. |
+| `VITE_ADAPTER` | `gear` | `gear` reads native VARA balances from Vara mainnet. `mock` runs a fully simulated protocol with no chain access. |
 | `VITE_VAULTERA_PROGRAM_ID` | empty | Sails program id. Until it is set, program writes are simulated and the UI shows a "simulation" badge. |
 
 ## Layout

@@ -27,10 +27,10 @@ Two surfaces, one Vite app:
 
 ## Assumptions (G0 defaults)
 
-1. Testnet first. Live RPC is `wss://testnet.vara.network`; mainnet is a config switch only.
+1. Vara mainnet only (changed 2026-09-03 at the owner's request; the earlier testnet-first default is gone). RPC is `wss://rpc.vara.network`, overridable with `VITE_VARA_RPC`.
 2. No staking program is deployed yet. The app runs on a `MockAdapter` that simulates the
    protocol exactly as the kit describes it (rate 1.0482, 14.2% APY, 0.3% instant fee, 7 day
-   unbond). A `GearAdapter` reads real native VARA balances from testnet and is wired to accept a
+   unbond). A `GearAdapter` reads real native VARA balances from mainnet and is wired to accept a
    program id and IDL through env vars when a program exists. The UI shows a "simulation" badge
    whenever the adapter is not talking to a real program.
 3. Wallets: any Substrate injected extension (Polkadot.js, SubWallet, Talisman, Nova).

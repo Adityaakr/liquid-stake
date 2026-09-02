@@ -3,9 +3,9 @@ import { MockAdapter } from './mockAdapter';
 import { ONE_STABLE, ONE_VARA } from '@/domain/protocol';
 import { instantUnstakeOut, varaToKVara } from '@/domain/math';
 
-const A = 'kGgnRBZaRrvNYhq3WA1ynStL5Ekv2yV2dTKBvUJzCfuMwaLzU';
+const A = 'kGj1akEAemmGoVyFqeHVSNUyUj1mJp3gazUYy7Zs2p7BsgT88';
 let m: MockAdapter;
-beforeEach(() => { m = new MockAdapter('testnet', { latencyMs: 0, storage: false }); });
+beforeEach(() => { m = new MockAdapter('mainnet', { latencyMs: 0, storage: false }); });
 
 describe('MockAdapter', () => {
   it('starts with the kit balances', async () => {
@@ -64,12 +64,12 @@ describe('MockAdapter', () => {
 describe('MockAdapter regressions from review', () => {
   it('persists unbond entries across a reload (bigint serialization)', async () => {
     localStorage.clear();
-    const a = new MockAdapter('testnet', { latencyMs: 0 });
+    const a = new MockAdapter('mainnet', { latencyMs: 0 });
     await a.stake(A, 100n * ONE_VARA);
     const b = await a.getBalances(A);
     await a.unstakeNative(A, b.kVARA);
     await a.stake(A, 50n * ONE_VARA);
-    const fresh = new MockAdapter('testnet', { latencyMs: 0 });
+    const fresh = new MockAdapter('mainnet', { latencyMs: 0 });
     expect(await fresh.getUnbonding(A)).toHaveLength(1);
     expect((await fresh.getBalances(A)).VARA).toBe((await a.getBalances(A)).VARA);
     localStorage.clear();

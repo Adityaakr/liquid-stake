@@ -82,7 +82,7 @@ describe('formatting', () => {
     expect(formatRate(parseRate('1.0482'))).toBe('1.0482');
   });
   it('shortens addresses and formats countdowns', () => {
-    expect(shortAddress('kGgnRBZaRrvNYhq3WA1ynStL5Ekv2yV2dTKBvUJzCfuMwaLzU')).toBe('kGgnRB…LzU'.replace('kGgnRB…LzU', 'kGgnRB…aLzU'));
+    expect(shortAddress('kGj1akEAemmGoVyFqeHVSNUyUj1mJp3gazUYy7Zs2p7BsgT88')).toBe('kGj1ak…gT88');
     expect(formatCountdown(6 * 86_400_000 + 23 * 3_600_000)).toBe('6d 23h');
     expect(formatCountdown(0)).toBe('now');
   });

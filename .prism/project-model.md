@@ -38,3 +38,9 @@ remembered-account guard + route errorElement; statsError surfaced; dialog focus
 Not fixed (recorded): gradient text appears more than once per screen (inherited from kit JSX);
 Tabs lacks arrow-key navigation and tabpanel wiring; 'Your shares' row on vault cards is an addition
 to the kit; GearAdapter program reads are stubbed until a Sails IDL exists.
+
+## 2026-09-03 mainnet switch (owner request)
+- Single network: Vara mainnet, `VITE_VARA_RPC` (default wss://rpc.vara.network). `NetworkId` is `'mainnet'` only.
+- `.env` (gitignored) and `.env.example` default to `VITE_ADAPTER=gear`: real native VARA balance reads, program writes still simulated (no program id).
+- Demo account `kGj1ak…gT88` is a valid SS58 address derived from a fixed seed; GearAdapter keeps it fully simulated.
+- Verified: Node `GearApi.create` against mainnet (spec vara 11000) and a headless browser balance read for a fresh address, no page errors.

@@ -45,5 +45,5 @@ export function recallAccount(): Account | null {
   } catch { return null; }
 }
 
-/** A stable demo account used when the app runs in simulation without a wallet. */
-export const DEMO_ACCOUNT: Account = { address: 'kGgnRBZaRrvNYhq3WA1ynStL5Ekv2yV2dTKBvUJzCfuMwaLzU', name: 'Demo', source: 'demo' };
+/** A stable demo account used when the app runs in simulation without a wallet. Derived from a fixed seed; nobody holds its key. */
+export const DEMO_ACCOUNT: Account = { address: 'kGj1akEAemmGoVyFqeHVSNUyUj1mJp3gazUYy7Zs2p7BsgT88', name: 'Demo', source: 'demo' };

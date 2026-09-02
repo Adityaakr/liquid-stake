@@ -104,7 +104,7 @@ export function Footer() {
           {col('Community', [['X', 'https://x.com/VaraNetwork'], ['Discord', 'https://discord.gg/x8ZeSy6S6K'], ['Telegram', 'https://t.me/VaraNetwork_Global'], ['Governance', '#faq']])}
         </div>
         <div className="ld-footer-bar">
-          <span>kVARA · Vara testnet</span>
+          <span>kVARA · Vara mainnet</span>
           <span>Figures shown are illustrative. Staking involves slashing and liquidation risk.</span>
           <span>© 2026 Vaultera · Built on Vara</span>
         </div>

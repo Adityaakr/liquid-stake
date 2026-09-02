@@ -1,6 +1,7 @@
 import type { VaultAsset } from '@/domain/protocol';
 import { NETWORKS } from './networks';
 import { MockAdapter } from './mockAdapter';
+import { DEMO_ACCOUNT } from './wallet';
 import { ChainError, type Balances, type NetworkId, type ProtocolStats, type StakingAdapter, type TxResult, type UnbondEntry } from './types';
 
 type GearApiT = import('@gear-js/api').GearApi;
@@ -16,7 +17,7 @@ export class GearAdapter implements StakingAdapter {
   private fallback: MockAdapter;
   readonly programId: string | undefined;
 
-  constructor(readonly network: NetworkId = 'testnet', programId = import.meta.env.VITE_VAULTERA_PROGRAM_ID as string | undefined) {
+  constructor(readonly network: NetworkId = 'mainnet', programId = import.meta.env.VITE_VAULTERA_PROGRAM_ID as string | undefined) {
     this.programId = programId && programId.length > 0 ? programId : undefined;
     this.fallback = new MockAdapter(network);
   }
@@ -38,6 +39,8 @@ export class GearAdapter implements StakingAdapter {
   }
 
   async getBalances(address: string): Promise<Balances> {
+    // The demo account has no real funds; keep it fully simulated so the flows stay usable without a wallet.
+    if (address === DEMO_ACCOUNT.address) return this.fallback.getBalances(address);
     const api = await this.connect();
     const b = await api.balance.findOut(address);
     const rest = await this.fallback.getBalances(address);

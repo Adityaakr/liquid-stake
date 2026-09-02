@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { VaultAsset } from '@/domain/protocol';
 import { MockAdapter } from './mockAdapter';
 import { GearAdapter } from './gearAdapter';
-import { DEFAULT_NETWORK } from './networks';
+import { DEFAULT_NETWORK, NETWORKS } from './networks';
 import { ChainError, type Account, type Balances, type NetworkId, type ProtocolStats, type StakingAdapter, type TxResult, type TxStage, type UnbondEntry } from './types';
 import { DEMO_ACCOUNT, connectWallet, recallAccount, rememberAccount } from './wallet';
 
@@ -108,7 +108,7 @@ export function StoreProvider({ children, adapter: injected }: { children: React
       setAccounts(list);
       const a = list[0];
       setAccount(a); rememberAccount(a);
-      notify({ tone: 'ok', title: 'Wallet connected', detail: `${a.name ?? 'Account'} · ${adapter.network === 'testnet' ? 'Vara testnet' : 'Vara mainnet'}` });
+      notify({ tone: 'ok', title: 'Wallet connected', detail: `${a.name ?? 'Account'} · ${NETWORKS[adapter.network].label}` });
     } catch (e) {
       notify({ tone: 'danger', title: 'Could not connect', detail: errorMessage(e) });
       throw e;

@@ -1,6 +1,6 @@
 import type { VaultAsset } from '@/domain/protocol';
 
-export type NetworkId = 'testnet' | 'mainnet';
+export type NetworkId = 'mainnet';
 
 export type ProtocolStats = {
   /** kVARA -> VARA exchange rate, scaled 1e9 */
