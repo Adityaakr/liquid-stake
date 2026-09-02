@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { normalizeAmountInput } from './AmountField';
 import { recallAccount } from '@/chain/wallet';
-import { tideToVara, sharesToAssets, validateAmount } from '@/domain/math';
+import { kVaraToVara, sharesToAssets, validateAmount } from '@/domain/math';
 
 describe('amount input normalization', () => {
   it('treats grouped commas as thousands and a lone comma as a decimal', () => {
@@ -14,17 +14,17 @@ describe('amount input normalization', () => {
 
 describe('remembered account', () => {
   it('drops malformed storage instead of crashing', () => {
-    localStorage.setItem('tide.wallet.v1', JSON.stringify({ nope: true }));
+    localStorage.setItem('vaultera.wallet.v1', JSON.stringify({ nope: true }));
     expect(recallAccount()).toBeNull();
-    expect(localStorage.getItem('tide.wallet.v1')).toBeNull();
-    localStorage.setItem('tide.wallet.v1', '{not json');
+    expect(localStorage.getItem('vaultera.wallet.v1')).toBeNull();
+    localStorage.setItem('vaultera.wallet.v1', '{not json');
     expect(recallAccount()).toBeNull();
   });
 });
 
 describe('math guards', () => {
   it('rejects zero rate and share price', () => {
-    expect(() => tideToVara(1n, 0n)).toThrow(RangeError);
+    expect(() => kVaraToVara(1n, 0n)).toThrow(RangeError);
     expect(() => sharesToAssets(1n, 0n)).toThrow(RangeError);
   });
   it('skips the insufficient check while balance is loading', () => {

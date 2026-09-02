@@ -1,7 +1,7 @@
 import { useNavigate, useOutletContext } from 'react-router';
 import { Badge, Bento, Button, Stat, TokenBadge, type TokenSymbol } from '@/ui';
 import { useStore } from '@/chain/store';
-import { sharesToAssets, tideToVara } from '@/domain/math';
+import { sharesToAssets, kVaraToVara } from '@/domain/math';
 import { bpsToPercent, formatCountdown, formatRate, formatStable, formatUsd, formatVara, toNumber } from '@/domain/format';
 import { STABLE_DECIMALS, VARA_DECIMALS } from '@/domain/protocol';
 import type { AppOutlet } from './AppLayout';
@@ -14,18 +14,18 @@ export function PortfolioPage() {
   const now = useNow();
 
   const price = stats?.varaPriceUsd ?? 0;
-  const stakedV = stats && balances ? tideToVara(balances.tideVARA, stats.rate) : 0n;
+  const stakedV = stats && balances ? kVaraToVara(balances.kVARA, stats.rate) : 0n;
   const stableUsd = stats && balances
-    ? toNumber(sharesToAssets(balances.tideUSDT, stats.vaultSharePrice.USDT), STABLE_DECIMALS) + toNumber(sharesToAssets(balances.tideUSDC, stats.vaultSharePrice.USDC), STABLE_DECIMALS)
+    ? toNumber(sharesToAssets(balances.kUSDT, stats.vaultSharePrice.USDT), STABLE_DECIMALS) + toNumber(sharesToAssets(balances.kUSDC, stats.vaultSharePrice.USDC), STABLE_DECIMALS)
     : 0;
   const unbondingV = unbonding.reduce((a, u) => a + u.amountVara, 0n);
   const totalUsd = toNumber(stakedV + unbondingV, VARA_DECIMALS) * price + stableUsd;
 
   type RowT = { tok: TokenSymbol; amt: string; rate: string; val: string; apy: string; status: ['accent' | 'ok', string] };
   const all: (RowT & { raw: bigint })[] = stats && balances ? [
-    { tok: 'tideVARA', amt: formatVara(balances.tideVARA), rate: formatRate(stats.rate), val: formatUsd(toNumber(stakedV, VARA_DECIMALS) * price), apy: bpsToPercent(stats.stakeApyBps), status: ['accent', 'earning'], raw: balances.tideVARA },
-    { tok: 'tideUSDT', amt: formatStable(balances.tideUSDT), rate: formatRate(stats.vaultSharePrice.USDT), val: formatUsd(toNumber(sharesToAssets(balances.tideUSDT, stats.vaultSharePrice.USDT), STABLE_DECIMALS)), apy: bpsToPercent(stats.vaultApyBps.USDT), status: ['ok', 'accruing'], raw: balances.tideUSDT },
-    { tok: 'tideUSDC', amt: formatStable(balances.tideUSDC), rate: formatRate(stats.vaultSharePrice.USDC), val: formatUsd(toNumber(sharesToAssets(balances.tideUSDC, stats.vaultSharePrice.USDC), STABLE_DECIMALS)), apy: bpsToPercent(stats.vaultApyBps.USDC), status: ['ok', 'accruing'], raw: balances.tideUSDC },
+    { tok: 'kVARA', amt: formatVara(balances.kVARA), rate: formatRate(stats.rate), val: formatUsd(toNumber(stakedV, VARA_DECIMALS) * price), apy: bpsToPercent(stats.stakeApyBps), status: ['accent', 'earning'], raw: balances.kVARA },
+    { tok: 'kUSDT', amt: formatStable(balances.kUSDT), rate: formatRate(stats.vaultSharePrice.USDT), val: formatUsd(toNumber(sharesToAssets(balances.kUSDT, stats.vaultSharePrice.USDT), STABLE_DECIMALS)), apy: bpsToPercent(stats.vaultApyBps.USDT), status: ['ok', 'accruing'], raw: balances.kUSDT },
+    { tok: 'kUSDC', amt: formatStable(balances.kUSDC), rate: formatRate(stats.vaultSharePrice.USDC), val: formatUsd(toNumber(sharesToAssets(balances.kUSDC, stats.vaultSharePrice.USDC), STABLE_DECIMALS)), apy: bpsToPercent(stats.vaultApyBps.USDC), status: ['ok', 'accruing'], raw: balances.kUSDC },
   ] : [];
   const rows: RowT[] = all.filter((r) => r.raw > 0n).map(({ raw: _r, ...rest }) => rest);
 
@@ -36,7 +36,7 @@ export function PortfolioPage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div className="ap-grid-4">
         <Bento variant="app" pad={20}><Stat label="Total value" value={formatUsd(totalUsd)} size="sm" gradient loading={loading} /></Bento>
-        <Bento variant="app" pad={20}><Stat label="Staked" value={`${balances ? formatVara(balances.tideVARA) : '0.00'} tideVARA`} size="sm" mono sub={`≈ ${formatVara(stakedV)} VARA`} loading={loading} /></Bento>
+        <Bento variant="app" pad={20}><Stat label="Staked" value={`${balances ? formatVara(balances.kVARA) : '0.00'} kVARA`} size="sm" mono sub={`≈ ${formatVara(stakedV)} VARA`} loading={loading} /></Bento>
         <Bento variant="app" pad={20}><Stat label="In vaults" value={formatUsd(stableUsd)} size="sm" mono loading={loading} /></Bento>
         <Bento variant="app" pad={20}><Stat label="Unbonding" value={`${formatVara(unbondingV)} VARA`} size="sm" mono sub={unbonding.length ? `claimable in ${formatCountdown(Math.min(...unbonding.map((u) => u.claimableAt)) - now)}` : '—'} loading={loading} /></Bento>
       </div>

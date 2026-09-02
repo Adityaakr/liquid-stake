@@ -1,6 +1,6 @@
-# Tide project model
+# Vaultera project model
 
-Repo: liquid staking frontend for Vara Network. Brand "tide", tokens tideVARA/tideUSDT/tideUSDC.
+Repo: liquid staking frontend for Vara Network. Brand "vaultera", tokens kVARA/kUSDT/kUSDC.
 Stack: Vite 8, React 19, TS 5.9, react-router 8, Vitest 4, pnpm. Design kit reference lives in
 `design/` (imported from Claude Design project f6b24684, read only; do not edit).
 

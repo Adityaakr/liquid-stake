@@ -15,7 +15,7 @@ function VaultCard({ asset }: { asset: VaultAsset }) {
   const [open, setOpen] = useState(false);
   const [amt, setAmt] = useState('');
   const dep = `w${asset}` as TokenSymbol;
-  const rec = `tide${asset}` as TokenSymbol;
+  const rec = `k${asset}` as TokenSymbol;
   const bal = balances?.[dep as 'wUSDT' | 'wUSDC'] ?? 0n;
   const parsed = useMemo(() => parseStable(amt), [amt]);
   const v = validateAmount(amt, parsed, balances ? bal : null);
@@ -45,8 +45,8 @@ function VaultCard({ asset }: { asset: VaultAsset }) {
       </div>
       <Meter label="Utilization" value={util} marker={80} tone={util < 80 ? 'grad' : 'danger'} />
       <div style={{ margin: '12px 0 20px' }}>
-        <Row k="Collateral accepted" v="tideVARA only" />
-        <Row k="Your shares" v={balances ? `${formatStable(balances[rec as 'tideUSDT' | 'tideUSDC'])} ${rec}` : '—'} />
+        <Row k="Collateral accepted" v="kVARA only" />
+        <Row k="Your shares" v={balances ? `${formatStable(balances[rec as 'kUSDT' | 'kUSDC'])} ${rec}` : '—'} />
       </div>
       <div style={{ marginTop: 'auto' }}>
         <Button block size="lg" onClick={() => setOpen(true)}>Deposit {dep}</Button>
@@ -101,10 +101,10 @@ export function VaultsPage() {
           <div>
             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 20 }}>Where the yield comes from</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '16px 0 14px', flexWrap: 'wrap' }}>
-              <FlowChip tok="tideVARA" label="tideVARA collateral" /><Arrow />
+              <FlowChip tok="kVARA" label="kVARA collateral" /><Arrow />
               <FlowChip label="loopers borrow stables" /><Arrow />
               <FlowChip label="interest accrues" /><Arrow />
-              <FlowChip tok="tideUSDT" label="share price rises" />
+              <FlowChip tok="kUSDT" label="share price rises" />
             </div>
             <div style={{ display: 'flex', gap: 8, marginTop: 2, flexWrap: 'wrap' }}>
               {['max LTV 50%', 'liq. threshold 65%', 'penalty 8%', 'kink 80%'].map((t) => (
@@ -112,7 +112,7 @@ export function VaultsPage() {
               ))}
             </div>
           </div>
-          <Button variant="secondary" onClick={() => notify({ tone: 'info', title: 'Borrowing opens in v1.1', detail: 'Loop tideVARA → stables → VARA from a single screen.' })}>Borrow against tideVARA</Button>
+          <Button variant="secondary" onClick={() => notify({ tone: 'info', title: 'Borrowing opens in v1.1', detail: 'Loop kVARA → stables → VARA from a single screen.' })}>Borrow against kVARA</Button>
         </div>
       </Bento>
     </div>

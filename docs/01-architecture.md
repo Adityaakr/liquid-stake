@@ -1,4 +1,4 @@
-# Tide v1 architecture
+# Vaultera v1 architecture
 
 Status: decided 2026-09-03 (Prism ship, lean pass). Gates G0 and G1 were cleared on stated
 assumptions because the brief asked for an end-to-end build; every assumption is listed below
@@ -34,7 +34,7 @@ Two surfaces, one Vite app:
    program id and IDL through env vars when a program exists. The UI shows a "simulation" badge
    whenever the adapter is not talking to a real program.
 3. Wallets: any Substrate injected extension (Polkadot.js, SubWallet, Talisman, Nova).
-4. Token names exactly as the kit: `tideVARA`, `tideUSDT`, `tideUSDC`. Wordmark `tide`.
+4. Token names exactly as the kit: `kVARA`, `kUSDT`, `kUSDC`. Wordmark `vaultera`.
 5. No backend. Stats come from the adapter.
 6. v1 scope: landing, stake, unstake (instant and native), claim unbonded, vaults deposit,
    portfolio. Deferred: borrowing, governance, analytics.

@@ -1,25 +1,25 @@
 import { describe, expect, it } from 'vitest';
-import { assetsToShares, instantUnstakeOut, nativeUnstakeOut, projectedYield, sharesToAssets, tideToVara, validateAmount, varaToTide } from './math';
+import { assetsToShares, instantUnstakeOut, nativeUnstakeOut, projectedYield, sharesToAssets, kVaraToVara, validateAmount, varaToKVara } from './math';
 import { formatRate, formatUnits, formatVara, parseRate, parseUnits, parseVara, shortAddress, formatCountdown } from './format';
 import { ONE_VARA, RATE_SCALE } from './protocol';
 
 const RATE = parseRate('1.0482');
 
 describe('exchange rate math', () => {
-  it('mints tideVARA = VARA / rate', () => {
-    const out = varaToTide(100n * ONE_VARA, RATE);
+  it('mints kVARA = VARA / rate', () => {
+    const out = varaToKVara(100n * ONE_VARA, RATE);
     expect(formatVara(out, 4)).toBe('95.4016');
   });
-  it('redeems VARA = tideVARA × rate and round trips within dust', () => {
-    const tide = varaToTide(100n * ONE_VARA, RATE);
-    const back = tideToVara(tide, RATE);
+  it('redeems VARA = kVARA × rate and round trips within dust', () => {
+    const vaultera = varaToKVara(100n * ONE_VARA, RATE);
+    const back = kVaraToVara(vaultera, RATE);
     expect(100n * ONE_VARA - back).toBeLessThan(10n);
   });
   it('rate 1.0 is identity', () => {
-    expect(varaToTide(7n * ONE_VARA, RATE_SCALE)).toBe(7n * ONE_VARA);
+    expect(varaToKVara(7n * ONE_VARA, RATE_SCALE)).toBe(7n * ONE_VARA);
   });
   it('rejects non positive rate', () => {
-    expect(() => varaToTide(1n, 0n)).toThrow(RangeError);
+    expect(() => varaToKVara(1n, 0n)).toThrow(RangeError);
   });
 });
 
@@ -31,7 +31,7 @@ describe('exits', () => {
     expect(net).toBe(997n * ONE_VARA);
   });
   it('native exit pays full rate with no fee', () => {
-    expect(nativeUnstakeOut(1000n * ONE_VARA, RATE)).toBe(tideToVara(1000n * ONE_VARA, RATE));
+    expect(nativeUnstakeOut(1000n * ONE_VARA, RATE)).toBe(kVaraToVara(1000n * ONE_VARA, RATE));
   });
   it('instant net is always below native for a positive amount', () => {
     const t = 12345n * ONE_VARA;

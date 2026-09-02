@@ -4,8 +4,8 @@ import { Button, IconButton } from '@/ui';
 
 export function Wordmark({ size = 24, color = 'var(--text-1)', href = '#top' }: { size?: number; color?: string; href?: string }) {
   return (
-    <a href={href} aria-label="tide home" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: size, letterSpacing: '-0.02em', color, textDecoration: 'none', lineHeight: 1 }}>
-      tide
+    <a href={href} aria-label="vaultera home" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: size, letterSpacing: '-0.02em', color, textDecoration: 'none', lineHeight: 1 }}>
+      vaultera
     </a>
   );
 }

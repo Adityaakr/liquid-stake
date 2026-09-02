@@ -4,7 +4,7 @@ import { Wordmark } from './Nav';
 
 export function Parameters() {
   const tiles: [string, string, string][] = [
-    ['Max LTV', '50%', 'borrow against tideVARA'],
+    ['Max LTV', '50%', 'borrow against kVARA'],
     ['Liq. threshold', '65%', 'price band before seizure'],
     ['Liq. penalty', '8%', 'bounty + insurance fund'],
     ['Utilization kink', '80%', 'rate curve turns steep'],
@@ -43,10 +43,10 @@ export function Parameters() {
 
 export function FAQ() {
   const qs: [string, string][] = [
-    ['Why tideVARA and not stVARA?', 'Nobody “stakes” USDT — st would be a lie on the stable side. One brand prefix truthfully means “Tide\'s yield-bearing receipt” for every asset, and every token in every wallet is an ad for the protocol. gVARA and wVARA are already taken on Vara anyway.'],
-    ['Where does the stable yield actually come from?', 'Borrow interest. Each vault lends into an isolated market where tideVARA is the only collateral. Borrowers are leverage stakers amplifying staking yield — they pay the interest your share price accrues.'],
-    ["What happens if VARA's price drops fast?", 'Positions crossing the 65% liquidation threshold are repaid by liquidators who seize tideVARA at an 8% discount. Bad debt occurs only if price gaps through the band faster than bots act — which is why LTV starts at a conservative 50%.'],
-    ["Why doesn't my balance go up?", 'tideVARA is non-rebasing: your balance is fixed and the redemption rate rises instead. Rebasing tokens break DEX pools, bridges and lending markets; a rising rate composes with everything.'],
+    ['Why kVARA and not stVARA?', 'Nobody “stakes” USDT — st would be a lie on the stable side. One brand prefix truthfully means “Vaultera\'s yield-bearing receipt” for every asset, and every token in every wallet is an ad for the protocol. gVARA and wVARA are already taken on Vara anyway.'],
+    ['Where does the stable yield actually come from?', 'Borrow interest. Each vault lends into an isolated market where kVARA is the only collateral. Borrowers are leverage stakers amplifying staking yield — they pay the interest your share price accrues.'],
+    ["What happens if VARA's price drops fast?", 'Positions crossing the 65% liquidation threshold are repaid by liquidators who seize kVARA at an 8% discount. Bad debt occurs only if price gaps through the band faster than bots act — which is why LTV starts at a conservative 50%.'],
+    ["Why doesn't my balance go up?", 'kVARA is non-rebasing: your balance is fixed and the redemption rate rises instead. Rebasing tokens break DEX pools, bridges and lending markets; a rising rate composes with everything.'],
     ['I hold less than 50 VARA. Can I stake?', "Yes — 50 VARA is Vara's minimum nomination, so the protocol pools below-minimum deposits and nominates them together. That's the point."],
   ];
   return (
@@ -104,9 +104,9 @@ export function Footer() {
           {col('Community', [['X', 'https://x.com/VaraNetwork'], ['Discord', 'https://discord.gg/x8ZeSy6S6K'], ['Telegram', 'https://t.me/VaraNetwork_Global'], ['Governance', '#faq']])}
         </div>
         <div className="ld-footer-bar">
-          <span>tideVARA · Vara testnet</span>
+          <span>kVARA · Vara testnet</span>
           <span>Figures shown are illustrative. Staking involves slashing and liquidation risk.</span>
-          <span>© 2026 Tide Labs · Built on Vara</span>
+          <span>© 2026 Vaultera · Built on Vara</span>
         </div>
       </div>
     </footer>

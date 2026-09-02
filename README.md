@@ -1,10 +1,10 @@
-# tide
+# vaultera
 
-Liquid staking on Vara Network. Stake VARA, receive tideVARA, exit instantly or unbond natively.
+Liquid staking on Vara Network. Stake VARA, receive kVARA, exit instantly or unbond natively.
 
 Two surfaces in one Vite app:
 
-- `/` marketing site, built from the Tide design kit in `design/`
+- `/` marketing site, built from the Vaultera design kit in `design/`
 - `/app` the product: stake and unstake, stable vaults, portfolio, unbonding claims
 
 ## Run
@@ -27,7 +27,7 @@ Copy `.env.example` to `.env`.
 | `VITE_ADAPTER` | `mock` | `mock` runs a fully simulated protocol. `gear` reads native VARA balances from the chain. |
 | `VITE_VARA_TESTNET_RPC` | `wss://testnet.vara.network` | RPC used when the network is testnet. |
 | `VITE_VARA_MAINNET_RPC` | `wss://rpc.vara.network` | RPC used when the network is mainnet. |
-| `VITE_TIDE_PROGRAM_ID` | empty | Sails program id. Until it is set, program writes are simulated and the UI shows a "simulation" badge. |
+| `VITE_VAULTERA_PROGRAM_ID` | empty | Sails program id. Until it is set, program writes are simulated and the UI shows a "simulation" badge. |
 
 ## Layout
 
@@ -46,8 +46,8 @@ src/chain      StakingAdapter interface, MockAdapter, GearAdapter, wallet, store
 
 All amounts are bigint in base units (VARA has 12 decimals, stables 6). The exchange rate is a bigint scaled by 1e9.
 
-- mint: `tideVARA = VARA / rate`
-- redeem: `VARA = tideVARA × rate`
+- mint: `kVARA = VARA / rate`
+- redeem: `VARA = kVARA × rate`
 - instant exit: redeem minus 0.3%
 - native exit: full rate, claimable after 7 days
 - vault shares: 4626 style, `shares = assets / sharePrice`

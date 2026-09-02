@@ -6,7 +6,7 @@ import { ExitPaths, Flywheel, HowItWorks, StatsBand, TokensTable } from './Secti
 import { CTABand, FAQ, Footer, Parameters } from './Closing';
 
 export function LandingPage() {
-  useEffect(() => { document.title = 'Tide — Stake VARA. Stay liquid.'; }, []);
+  useEffect(() => { document.title = 'Vaultera — Stake VARA. Stay liquid.'; }, []);
   return (
     <div id="top">
       <LandingNav />

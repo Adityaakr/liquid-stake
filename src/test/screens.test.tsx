@@ -42,7 +42,7 @@ describe('landing', () => {
       expect(screen.getByRole('heading', { level: 2, name: new RegExp(h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) })).toBeInTheDocument();
     }
     expect(screen.getAllByRole('link', { name: /Go to stake/ })[0]).toHaveAttribute('href', '/app');
-    expect(screen.getAllByText(/tideVARA/).length).toBeGreaterThan(3);
+    expect(screen.getAllByText(/kVARA/).length).toBeGreaterThan(3);
   });
 });
 
@@ -50,15 +50,15 @@ describe('app', () => {
   it('stake flow: connect demo, enter amount, stake, see position', async () => {
     const user = userEvent.setup();
     mount('/app');
-    await waitFor(() => expect(screen.getByText(/1 tideVARA =/)).toHaveTextContent(/1\.0482/));
+    await waitFor(() => expect(screen.getByText(/1 kVARA =/)).toHaveTextContent(/1\.0482/));
     await connectDemo(user);
     await waitFor(() => expect(screen.getByText(/Wallet balance/).parentElement).toHaveTextContent('1,240.52 VARA'));
     const input = screen.getByRole('textbox', { name: 'You stake' });
     await user.type(input, '100');
-    expect(screen.getByText(/You receive/).parentElement).toHaveTextContent('95.40 tideVARA');
+    expect(screen.getByText(/You receive/).parentElement).toHaveTextContent('95.40 kVARA');
     await user.click(screen.getByRole('button', { name: 'Stake' }));
     await waitFor(() => expect(screen.getByText(/Staked 100.00 VARA/)).toBeInTheDocument());
-    expect(screen.getByText('Position').parentElement).toHaveTextContent('95.40 tideVARA');
+    expect(screen.getByText('Position').parentElement).toHaveTextContent('95.40 kVARA');
     expect(screen.getByText(/Wallet balance/).parentElement).toHaveTextContent('1,140.52 VARA');
   });
 

@@ -36,7 +36,7 @@ function NotFound() {
       <div>
         <div className="eyebrow" style={{ color: 'var(--tide-400)', marginBottom: 12 }}>404</div>
         <h1 style={{ fontSize: 40, fontWeight: 600 }}>Nothing here.</h1>
-        <p style={{ color: 'var(--text-2)', marginTop: 10 }}><a href="/">Back to tide</a></p>
+        <p style={{ color: 'var(--text-2)', marginTop: 10 }}><a href="/">Back to vaultera</a></p>
       </div>
     </div>
   );

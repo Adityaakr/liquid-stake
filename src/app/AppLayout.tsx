@@ -57,7 +57,7 @@ function Sidebar() {
   return (
     <aside className="ap-side">
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0 12px', marginBottom: 28 }}>
-        <NavLink to="/" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 24, letterSpacing: '-0.02em', color: 'var(--text-1)', textDecoration: 'none' }}>tide</NavLink>
+        <NavLink to="/" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 24, letterSpacing: '-0.02em', color: 'var(--text-1)', textDecoration: 'none' }}>vaultera</NavLink>
         <Badge size="sm" mono>app</Badge>
       </div>
       <nav aria-label="App" style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -79,14 +79,14 @@ function Sidebar() {
 function TopBar({ onWallet }: { onWallet: () => void }) {
   const { pathname } = useLocation();
   const { stats, account } = useStore();
-  const title = TITLES[pathname] ?? 'Tide';
+  const title = TITLES[pathname] ?? 'Vaultera';
   return (
     <div className="ap-top">
       <div>
         <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 19, letterSpacing: 'var(--ls-heading)', lineHeight: 1.2 }}>{title}</div>
       </div>
       <span className="ap-pill ap-rate" style={{ marginLeft: 'auto' }}>
-        1 tideVARA = <span style={{ color: 'var(--tide-300)' }} className={stats ? undefined : 'skeleton'}>{stats ? formatRate(stats.rate) : '0.0000'}</span> VARA
+        1 kVARA = <span style={{ color: 'var(--tide-300)' }} className={stats ? undefined : 'skeleton'}>{stats ? formatRate(stats.rate) : '0.0000'}</span> VARA
       </span>
       {account ? (
         <button type="button" onClick={onWallet} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', marginLeft: stats ? 0 : 'auto' }} aria-label="Account">
@@ -113,7 +113,7 @@ export function AppLayout() {
   const [walletOpen, setWalletOpen] = useState(false);
   const { toasts, dismiss } = useStore();
   const { pathname } = useLocation();
-  useEffect(() => { document.title = `${TITLES[pathname] ?? 'Tide'} · Tide app`; }, [pathname]);
+  useEffect(() => { document.title = `${TITLES[pathname] ?? 'Vaultera'} · Vaultera app`; }, [pathname]);
   return (
     <div className="ap-root">
       <div className="ap-bg" aria-hidden>

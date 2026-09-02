@@ -41,7 +41,7 @@ function Chip() {
           {pads.map((o, i) => <span key={i} style={{ borderRadius: 4, background: `rgba(163,164,255,${o})` }} />)}
         </div>
         <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', width: 82, height: 82, borderRadius: 16, background: '#171221', border: '1px solid rgba(163,164,255,.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 22px rgba(139,140,255,.45)' }}>
-          <span className="grad-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 26, letterSpacing: '-0.02em' }}>tide</span>
+          <span className="grad-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 16, letterSpacing: '-0.02em' }}>vaultera</span>
         </div>
       </div>
     </div>
@@ -62,9 +62,9 @@ function CircuitBoard() {
           <Tile token="VARA" title="VARA — you deposit" style={{ left: 40, top: 20 }} />
           <Tile token="wUSDT" title="wUSDT — you deposit" style={{ left: 20, top: 232 }} />
           <Tile token="wUSDC" title="wUSDC — you deposit" style={{ left: 60, top: 420 }} />
-          <Tile token="tideVARA" title="tideVARA — you receive" style={{ right: 40, top: 20 }} />
-          <Tile token="tideUSDT" title="tideUSDT — you receive" style={{ right: 20, top: 232 }} />
-          <Tile token="tideUSDC" title="tideUSDC — you receive" style={{ right: 60, top: 420 }} />
+          <Tile token="kVARA" title="kVARA — you receive" style={{ right: 40, top: 20 }} />
+          <Tile token="kUSDT" title="kUSDT — you receive" style={{ right: 20, top: 232 }} />
+          <Tile token="kUSDC" title="kUSDC — you receive" style={{ right: 60, top: 420 }} />
         </div>
       </Fit>
     </div>

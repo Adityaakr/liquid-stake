@@ -3,18 +3,18 @@ import { BPS, INSTANT_UNSTAKE_FEE_BPS, RATE_SCALE } from './protocol';
 /**
  * All amounts are bigint in base units (planck for VARA, 1e-6 for stables).
  * The exchange rate is scaled by RATE_SCALE. Kit semantics:
- *   mint:   tideVARA = VARA / rate
- *   redeem: VARA     = tideVARA × rate
+ *   mint:   kVARA = VARA / rate
+ *   redeem: VARA     = kVARA × rate
  */
 
-export function varaToTide(vara: bigint, rate: bigint): bigint {
+export function varaToKVara(vara: bigint, rate: bigint): bigint {
   if (rate <= 0n) throw new RangeError('rate must be positive');
   return (vara * RATE_SCALE) / rate;
 }
 
-export function tideToVara(tide: bigint, rate: bigint): bigint {
+export function kVaraToVara(vaultera: bigint, rate: bigint): bigint {
   if (rate <= 0n) throw new RangeError('rate must be positive');
-  return (tide * rate) / RATE_SCALE;
+  return (vaultera * rate) / RATE_SCALE;
 }
 
 export function instantUnstakeFee(varaOut: bigint): bigint {
@@ -22,15 +22,15 @@ export function instantUnstakeFee(varaOut: bigint): bigint {
 }
 
 /** Instant exit: redeem at rate, minus the 0.3% fee. */
-export function instantUnstakeOut(tide: bigint, rate: bigint): { gross: bigint; fee: bigint; net: bigint } {
-  const gross = tideToVara(tide, rate);
+export function instantUnstakeOut(vaultera: bigint, rate: bigint): { gross: bigint; fee: bigint; net: bigint } {
+  const gross = kVaraToVara(vaultera, rate);
   const fee = instantUnstakeFee(gross);
   return { gross, fee, net: gross - fee };
 }
 
 /** Native exit: full rate, no fee, 7 day wait. */
-export function nativeUnstakeOut(tide: bigint, rate: bigint): bigint {
-  return tideToVara(tide, rate);
+export function nativeUnstakeOut(vaultera: bigint, rate: bigint): bigint {
+  return kVaraToVara(vaultera, rate);
 }
 
 /** Vault shares (4626 style): shares = assets / sharePrice, assets = shares × sharePrice. */

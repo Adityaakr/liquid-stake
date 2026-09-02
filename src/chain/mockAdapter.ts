@@ -1,12 +1,12 @@
 import { ONE_STABLE, ONE_VARA, RATE_SCALE, UNBONDING_MS, type VaultAsset } from '@/domain/protocol';
-import { assetsToShares, instantUnstakeOut, nativeUnstakeOut, varaToTide } from '@/domain/math';
+import { assetsToShares, instantUnstakeOut, nativeUnstakeOut, varaToKVara } from '@/domain/math';
 import { parseRate } from '@/domain/format';
 import { ChainError, type Balances, type NetworkId, type ProtocolStats, type StakingAdapter, type TxResult, type UnbondEntry } from './types';
 
 type StoredUnbond = Omit<UnbondEntry, 'amountVara'> & { amountVara: string };
 type Persisted = { balances: Record<string, Record<keyof Balances, string>>; unbonding: Record<string, StoredUnbond[]> };
 
-const KEY = 'tide.mock.v1';
+const KEY = 'vaultera.mock.v1';
 const ERA_MS = 12 * 60 * 60 * 1000;
 
 /** Rate grows ~14.2% a year, compounding every era. Matches the kit numbers at era 4,182. */
@@ -23,11 +23,11 @@ function rateAtEra(era: number): bigint {
 
 const DEFAULT_BALANCES: Balances = {
   VARA: 1240n * ONE_VARA + (52n * ONE_VARA) / 100n,
-  tideVARA: 0n,
+  kVARA: 0n,
   wUSDT: 500n * ONE_STABLE,
   wUSDC: 0n,
-  tideUSDT: 0n,
-  tideUSDC: 0n,
+  kUSDT: 0n,
+  kUSDC: 0n,
 };
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -132,35 +132,35 @@ export class MockAdapter implements StakingAdapter {
       const { rate } = await this.getStats();
       const r = await this.tx();
       const b = this.bal(address);
-      this.setBal(address, { ...b, VARA: b.VARA - vara, tideVARA: b.tideVARA + varaToTide(vara, rate) });
+      this.setBal(address, { ...b, VARA: b.VARA - vara, kVARA: b.kVARA + varaToKVara(vara, rate) });
       return r;
     });
   }
 
-  unstakeInstant(address: string, tide: bigint): Promise<TxResult> {
+  unstakeInstant(address: string, vaultera: bigint): Promise<TxResult> {
     return this.locked(address, async () => {
-      if (tide <= 0n || tide > this.bal(address).tideVARA) throw new ChainError('Insufficient tideVARA balance', 'INSUFFICIENT');
+      if (vaultera <= 0n || vaultera > this.bal(address).kVARA) throw new ChainError('Insufficient kVARA balance', 'INSUFFICIENT');
       const { rate } = await this.getStats();
-      const { net } = instantUnstakeOut(tide, rate);
+      const { net } = instantUnstakeOut(vaultera, rate);
       const r = await this.tx();
       const b = this.bal(address);
-      this.setBal(address, { ...b, tideVARA: b.tideVARA - tide, VARA: b.VARA + net });
+      this.setBal(address, { ...b, kVARA: b.kVARA - vaultera, VARA: b.VARA + net });
       return r;
     });
   }
 
-  unstakeNative(address: string, tide: bigint): Promise<TxResult> {
+  unstakeNative(address: string, vaultera: bigint): Promise<TxResult> {
     return this.locked(address, async () => {
-      if (tide <= 0n || tide > this.bal(address).tideVARA) throw new ChainError('Insufficient tideVARA balance', 'INSUFFICIENT');
+      if (vaultera <= 0n || vaultera > this.bal(address).kVARA) throw new ChainError('Insufficient kVARA balance', 'INSUFFICIENT');
       const { rate } = await this.getStats();
-      const out = nativeUnstakeOut(tide, rate);
+      const out = nativeUnstakeOut(vaultera, rate);
       const r = await this.tx();
       const now = Date.now();
       const list = this.state.unbonding[address] ?? [];
       list.push({ id: r.hash.slice(0, 10), amountVara: out.toString(), startedAt: now, claimableAt: now + UNBONDING_MS });
       this.state.unbonding[address] = list;
       const b = this.bal(address);
-      this.setBal(address, { ...b, tideVARA: b.tideVARA - tide });
+      this.setBal(address, { ...b, kVARA: b.kVARA - vaultera });
       return r;
     });
   }
@@ -182,7 +182,7 @@ export class MockAdapter implements StakingAdapter {
   depositVault(address: string, asset: VaultAsset, amount: bigint): Promise<TxResult> {
     return this.locked(address, async () => {
       const dep = `w${asset}` as const;
-      const rec = `tide${asset}` as const;
+      const rec = `k${asset}` as const;
       if (amount <= 0n || amount > this.bal(address)[dep]) throw new ChainError(`Insufficient ${dep} balance`, 'INSUFFICIENT');
       const { vaultSharePrice } = await this.getStats();
       const r = await this.tx();

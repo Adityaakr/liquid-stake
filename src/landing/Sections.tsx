@@ -33,7 +33,7 @@ export function BentoText({ title, children, style }: { title: string; children:
 
 const STATS: [string, string, string][] = [
   ['VARA staked', '8.6M+', 'across a curated validator set'],
-  ['tideVARA holders', '12.4K+', 'wallets, pools and vaults'],
+  ['kVARA holders', '12.4K+', 'wallets, pools and vaults'],
   ['Paid to stakers', '940K', 'VARA, compounded era by era'],
 ];
 
@@ -112,7 +112,7 @@ function SwapIllo() {
       {[88, 104, 120].map((y) => <div key={y} style={{ position: 'absolute', left: '42%', top: y, width: '16%', borderTop: '2px dashed rgba(163,164,255,.45)' }} />)}
       <span className="bd-streak" style={{ left: '40%', top: 95, '--d': '140px', width: 52, animationDelay: '.4s' } as CSSProperties} />
       <span className="bd-streak" style={{ left: '42%', top: 127, '--d': '120px', width: 44, animationDelay: '1.8s' } as CSSProperties} />
-      <MiniTile token="tideVARA" style={{ left: '14%', top: 56 }} />
+      <MiniTile token="kVARA" style={{ left: '14%', top: 56 }} />
       <MiniTile token="VARA" style={{ right: '14%', top: 56 }} />
     </div>
   );
@@ -127,14 +127,14 @@ function BorrowIllo() {
           <div style={{ width: 292, height: 92, borderRadius: 99, background: '#1C1729', border: '1px solid rgba(139,140,255,.35)', boxShadow: 'inset 0 4px 16px rgba(0,0,0,.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
             <TokenIcon token="wUSDT" size={30} style={{ opacity: 0.75 }} />
             <span style={dash} />
-            <span style={{ width: 58, height: 58, minWidth: 58, borderRadius: 99, background: 'radial-gradient(circle at 32% 28%,#A3A4FF,#8B8CFF)', boxShadow: '0 0 30px rgba(163,164,255,.9), inset 0 2px 4px rgba(255,255,255,.35)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><TokenIcon token="tideVARA" size={44} /></span>
+            <span style={{ width: 58, height: 58, minWidth: 58, borderRadius: 99, background: 'radial-gradient(circle at 32% 28%,#A3A4FF,#8B8CFF)', boxShadow: '0 0 30px rgba(163,164,255,.9), inset 0 2px 4px rgba(255,255,255,.35)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><TokenIcon token="kVARA" size={44} /></span>
             <span style={dash} />
             <TokenIcon token="wUSDC" size={30} style={{ opacity: 0.75 }} />
           </div>
         </div>
       </Fit>
       <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '.08em', color: 'var(--text-3)', border: '1px solid var(--line-2)', borderRadius: 99, padding: '5px 12px', background: 'rgba(33,28,48,.7)' }}>
-        collateral: tideVARA · max LTV <span style={{ color: 'var(--tide-300)' }}>50%</span>
+        collateral: kVARA · max LTV <span style={{ color: 'var(--tide-300)' }}>50%</span>
       </span>
     </div>
   );
@@ -146,7 +146,7 @@ export function HowItWorks() {
       <div className="ld-how">
         <Bento pad={30} className="tall">
           <StakeIllo />
-          <BentoText title="Stake" style={{ marginTop: 'auto', paddingTop: 26 }}>Stake VARA through Tide to obtain tideVARA — instant redemption in minutes, or a free native unbond in 7 days.</BentoText>
+          <BentoText title="Stake" style={{ marginTop: 'auto', paddingTop: 26 }}>Stake VARA through Vaultera to obtain kVARA — instant redemption in minutes, or a free native unbond in 7 days.</BentoText>
         </Bento>
         <Bento pad={30}>
           <BentoText title="Swap">Seamless exits at the market rate — the liquidity buffer fills instantly, the DEX backstops it.</BentoText>
@@ -154,7 +154,7 @@ export function HowItWorks() {
         </Bento>
         <Bento pad={30}>
           <BorrowIllo />
-          <BentoText title="Borrowing" style={{ marginTop: 'auto', paddingTop: 22 }}>Post tideVARA as the only collateral, borrow wUSDT or wUSDC, and loop your stake.</BentoText>
+          <BentoText title="Borrowing" style={{ marginTop: 'auto', paddingTop: 22 }}>Post kVARA as the only collateral, borrow wUSDT or wUSDC, and loop your stake.</BentoText>
         </Bento>
       </div>
     </Sec>
@@ -164,13 +164,13 @@ export function HowItWorks() {
 export function Flywheel() {
   const nodes: [string, TokenSymbol, CSSProperties][] = [
     ['Stake VARA', 'VARA', { left: '50%', top: 60 }],
-    ['Mint tideVARA', 'tideVARA', { left: 500, top: '50%' }],
-    ['Post tideVARA, borrow stables', 'wUSDT', { left: '50%', top: 500 }],
+    ['Mint kVARA', 'kVARA', { left: 500, top: '50%' }],
+    ['Post kVARA, borrow stables', 'wUSDT', { left: '50%', top: 500 }],
     ['Buy VARA again', 'VARA', { left: 60, top: '50%' }],
   ];
   const steps: [string, string][] = [
     ['Network security rises', 'Every borrowed stable buys VARA that gets bonded back to validators.'],
-    ['Stable yield rises', 'More loop demand means more borrow interest paid to tideUSDT and tideUSDC holders.'],
+    ['Stable yield rises', 'More loop demand means more borrow interest paid to kUSDT and kUSDC holders.'],
     ['The backstop deepens', 'Protocol fees fill the insurance fund before anyone pays the treasury.'],
   ];
   return (
@@ -217,12 +217,12 @@ export function Flywheel() {
 
 export function TokensTable() {
   const rows: [TokenSymbol, TokenSymbol, string, string, 'accent' | 'info'][] = [
-    ['tideVARA', 'VARA', 'Era staking rewards, compounded', 'Value-accruing', 'accent'],
-    ['tideUSDT', 'wUSDT', 'Borrow interest from loopers', 'Vault share · 4626', 'info'],
-    ['tideUSDC', 'wUSDC', 'Borrow interest from loopers', 'Vault share · 4626', 'info'],
+    ['kVARA', 'VARA', 'Era staking rewards, compounded', 'Value-accruing', 'accent'],
+    ['kUSDT', 'wUSDT', 'Borrow interest from loopers', 'Vault share · 4626', 'info'],
+    ['kUSDC', 'wUSDC', 'Borrow interest from loopers', 'Vault share · 4626', 'info'],
   ];
   return (
-    <Sec id="tokens" eyebrow="Token architecture" title="One prefix. Every receipt." sub="tideX truthfully means “Tide's yield-bearing receipt for X” — for every asset, forever. No stVARA semantics stretched over stables, no collisions with gVARA or wVARA.">
+    <Sec id="tokens" eyebrow="Token architecture" title="One prefix. Every receipt." sub="kX truthfully means “Vaultera's yield-bearing receipt for X” — for every asset, forever. No stVARA semantics stretched over stables, no collisions with gVARA or wVARA.">
       <Bento style={{ marginTop: 44 }}>
         <div className="ld-table-wrap">
           <table className="ld-table">
@@ -250,8 +250,8 @@ export function TokensTable() {
 
 export function ExitPaths() {
   const paths = [
-    { icon: 'zap', title: 'Instant', desc: 'Swap tideVARA for VARA from the liquidity buffer or DEX.', rows: [['Speed', 'immediate'], ['Cost', '~0.3% + slippage'], ['Via', 'buffer → DEX']], foot: 'buffer target 5–10% of TVL' },
-    { icon: 'hourglass', title: 'Native unbond', desc: 'Burn tideVARA; the protocol unbonds from validators.', rows: [['Speed', '7 days'], ['Cost', 'free'], ['Rate', 'full exchange rate']], foot: 'Vara unbonding period' },
+    { icon: 'zap', title: 'Instant', desc: 'Swap kVARA for VARA from the liquidity buffer or DEX.', rows: [['Speed', 'immediate'], ['Cost', '~0.3% + slippage'], ['Via', 'buffer → DEX']], foot: 'buffer target 5–10% of TVL' },
+    { icon: 'hourglass', title: 'Native unbond', desc: 'Burn kVARA; the protocol unbonds from validators.', rows: [['Speed', '7 days'], ['Cost', 'free'], ['Rate', 'full exchange rate']], foot: 'Vara unbonding period' },
   ] as const;
   return (
     <Sec eyebrow="Exits" title="Two ways out. Always.">

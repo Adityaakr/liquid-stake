@@ -3,7 +3,7 @@ import { useOutletContext } from 'react-router';
 import { ChartPie, Coins, Star, Wallet } from 'lucide-react';
 import { AmountField, Badge, Bento, Button, Tabs } from '@/ui';
 import { useStore } from '@/chain/store';
-import { instantUnstakeOut, nativeUnstakeOut, validateAmount, varaToTide } from '@/domain/math';
+import { instantUnstakeOut, nativeUnstakeOut, validateAmount, varaToKVara } from '@/domain/math';
 import { bpsToPercent, formatCompactUsd, formatCountdown, formatRate, formatUsd, formatVara, parseVara, toNumber } from '@/domain/format';
 import { VARA_DECIMALS } from '@/domain/protocol';
 import { Eyebrow, IRow, useNow } from './bits';
@@ -35,13 +35,13 @@ export function StakePage() {
 
   const rate = stats?.rate ?? null;
   const parsed = useMemo(() => parseVara(amt), [amt]);
-  const bal = tab === 'Stake' ? balances?.VARA ?? 0n : balances?.tideVARA ?? 0n;
+  const bal = tab === 'Stake' ? balances?.VARA ?? 0n : balances?.kVARA ?? 0n;
   const validation = validateAmount(amt, parsed, balances ? bal : null);
   const error = touched && !validation.ok && validation.reason !== 'empty' ? REASON[validation.reason] : undefined;
 
   const out = useMemo(() => {
     if (!rate || !parsed) return { main: 0n, fee: 0n };
-    if (tab === 'Stake') return { main: varaToTide(parsed, rate), fee: 0n };
+    if (tab === 'Stake') return { main: varaToKVara(parsed, rate), fee: 0n };
     if (path === 'instant') { const r = instantUnstakeOut(parsed, rate); return { main: r.net, fee: r.fee }; }
     return { main: nativeUnstakeOut(parsed, rate), fee: 0n };
   }, [rate, parsed, tab, path]);
@@ -57,7 +57,7 @@ export function StakePage() {
     const a = parsed;
     let ok = false;
     if (tab === 'Stake') {
-      ok = await run('Stake', (addr) => adapter.stake(addr, a), { title: `Staked ${formatVara(a)} VARA`, detail: `You received ${formatVara(out.main)} tideVARA at rate ${formatRate(rate)}.` });
+      ok = await run('Stake', (addr) => adapter.stake(addr, a), { title: `Staked ${formatVara(a)} VARA`, detail: `You received ${formatVara(out.main)} kVARA at rate ${formatRate(rate)}.` });
     } else if (path === 'instant') {
       ok = await run('Instant unstake', (addr) => adapter.unstakeInstant(addr, a), { title: 'Unstaked instantly', detail: `${formatVara(out.main)} VARA received · 0.3% fee applied.` });
     } else {
@@ -90,7 +90,7 @@ export function StakePage() {
           <div style={{ marginTop: 16 }}>
             <AmountField
               label={tab === 'Stake' ? 'You stake' : 'You unstake'}
-              token={tab === 'Stake' ? 'VARA' : 'tideVARA'}
+              token={tab === 'Stake' ? 'VARA' : 'kVARA'}
               balance={balances ? formatVara(bal) : undefined}
               value={amt}
               onChange={(v) => { setAmt(v); setTouched(true); }}
@@ -107,9 +107,9 @@ export function StakePage() {
             </div>
           )}
           <div style={{ margin: '10px 0 14px' }}>
-            <IRow icon={<ChartPie size={14} strokeWidth={1.5} />} k="Position" v={balances ? `${formatVara(balances.tideVARA)} tideVARA` : account ? '…' : '—'} loading={!!account && !balances} />
+            <IRow icon={<ChartPie size={14} strokeWidth={1.5} />} k="Position" v={balances ? `${formatVara(balances.kVARA)} kVARA` : account ? '…' : '—'} loading={!!account && !balances} />
             <IRow icon={<Star size={14} strokeWidth={1.5} />} k="APY" v={stats ? bpsToPercent(stats.stakeApyBps) : '…'} accent loading={!stats} />
-            <IRow icon={<Coins size={14} strokeWidth={1.5} />} k="You receive" v={`${formatVara(out.main)} ${tab === 'Stake' ? 'tideVARA' : 'VARA'}`} />
+            <IRow icon={<Coins size={14} strokeWidth={1.5} />} k="You receive" v={`${formatVara(out.main)} ${tab === 'Stake' ? 'kVARA' : 'VARA'}`} />
             {tab === 'Unstake' && path === 'instant' && parsed ? <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11.5, color: 'var(--text-3)', textAlign: 'right', marginTop: -6 }}>fee {formatVara(out.fee, 4)} VARA</div> : null}
           </div>
           <Button size="xl" block disabled={!!account && !validation.ok} loading={busy} onClick={act}>

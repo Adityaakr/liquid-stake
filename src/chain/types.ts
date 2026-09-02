@@ -3,7 +3,7 @@ import type { VaultAsset } from '@/domain/protocol';
 export type NetworkId = 'testnet' | 'mainnet';
 
 export type ProtocolStats = {
-  /** tideVARA -> VARA exchange rate, scaled 1e9 */
+  /** kVARA -> VARA exchange rate, scaled 1e9 */
   rate: bigint;
   stakeApyBps: bigint;
   vaultApyBps: Record<VaultAsset, bigint>;
@@ -22,11 +22,11 @@ export type ProtocolStats = {
 
 export type Balances = {
   VARA: bigint;
-  tideVARA: bigint;
+  kVARA: bigint;
   wUSDT: bigint;
   wUSDC: bigint;
-  tideUSDT: bigint;
-  tideUSDC: bigint;
+  kUSDT: bigint;
+  kUSDC: bigint;
 };
 
 export type UnbondEntry = { id: string; amountVara: bigint; startedAt: number; claimableAt: number };
@@ -57,8 +57,8 @@ export interface StakingAdapter {
   getBalances(address: string): Promise<Balances>;
   getUnbonding(address: string): Promise<UnbondEntry[]>;
   stake(address: string, vara: bigint): Promise<TxResult>;
-  unstakeInstant(address: string, tide: bigint): Promise<TxResult>;
-  unstakeNative(address: string, tide: bigint): Promise<TxResult>;
+  unstakeInstant(address: string, vaultera: bigint): Promise<TxResult>;
+  unstakeNative(address: string, vaultera: bigint): Promise<TxResult>;
   claimUnbonded(address: string, id: string): Promise<TxResult>;
   depositVault(address: string, asset: VaultAsset, amount: bigint): Promise<TxResult>;
   /** Subscribe to stat changes (era ticks). Returns unsubscribe. */

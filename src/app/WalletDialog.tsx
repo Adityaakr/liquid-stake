@@ -34,7 +34,7 @@ export function WalletDialog({ open, onClose }: { open: boolean; onClose: () => 
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <p style={{ fontSize: 13.5, color: 'var(--text-2)', lineHeight: 1.6 }}>
-            Tide works with any Substrate wallet extension. Your keys never leave the wallet.
+            Vaultera works with any Substrate wallet extension. Your keys never leave the wallet.
           </p>
           {WALLETS.map((w) => {
             const has = detected.includes(w.id);
