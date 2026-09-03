@@ -161,51 +161,59 @@ export function HowItWorks() {
   );
 }
 
+type FlyPos = 'top' | 'right' | 'bottom' | 'left';
+const FLY_NODES: [string, TokenSymbol, FlyPos][] = [
+  ['Stake VARA', 'VARA', 'top'],
+  ['Mint kVARA', 'kVARA', 'right'],
+  ['Post kVARA, borrow stables', 'wUSDT', 'bottom'],
+  ['Buy VARA again', 'VARA', 'left'],
+];
+/** Arrow heads sit on the ring at these screen angles (0 = right, clockwise) and point along it. */
+const FLY_ARROWS_DESKTOP = [-45, 45, 135, 225];
+/** On phones the side pills are staggered, so the arrows move to stay between the pills. */
+const FLY_ARROWS_MOBILE = [-55, 25, 130, 205];
+const FLY_STEPS: [string, string][] = [
+  ['Network security rises', 'Every borrowed stable buys VARA that gets bonded back to validators.'],
+  ['Stable yield rises', 'More loop demand means more borrow interest paid to kUSDT and kUSDC holders.'],
+  ['The backstop deepens', 'Protocol fees fill the insurance fund before anyone pays the treasury.'],
+];
+
+function flyArrowStyle(deg: number): CSSProperties {
+  const rad = (deg * Math.PI) / 180;
+  return { '--ax': Math.cos(rad).toFixed(4), '--ay': Math.sin(rad).toFixed(4), '--rot': `${deg + 90}deg` } as CSSProperties;
+}
+
 export function Flywheel() {
-  const nodes: [string, TokenSymbol, CSSProperties][] = [
-    ['Stake VARA', 'VARA', { left: '50%', top: 60 }],
-    ['Mint kVARA', 'kVARA', { left: 500, top: '50%' }],
-    ['Post kVARA, borrow stables', 'wUSDT', { left: '50%', top: 500 }],
-    ['Buy VARA again', 'VARA', { left: 60, top: '50%' }],
-  ];
-  const steps: [string, string][] = [
-    ['Network security rises', 'Every borrowed stable buys VARA that gets bonded back to validators.'],
-    ['Stable yield rises', 'More loop demand means more borrow interest paid to kUSDT and kUSDC holders.'],
-    ['The backstop deepens', 'Protocol fees fill the insurance fund before anyone pays the treasury.'],
-  ];
   return (
     <Sec eyebrow="The flywheel" title="Every loop feeds the next.">
       <div className="ld-fly">
-        <div style={{ maxWidth: 560, margin: '0 auto', width: '100%' }}>
-          <Fit width={560} height={560}>
-            <div style={{ position: 'relative', width: 560, height: 560 }}>
-              <div style={{ position: 'absolute', inset: 60, borderRadius: '50%', border: '1.5px solid rgba(163,164,255,.16)' }} />
-              <div style={{ position: 'absolute', inset: 60, borderRadius: '50%', background: 'radial-gradient(closest-side,rgba(139,140,255,.12),rgba(139,140,255,.03) 65%,transparent)' }} />
-              <div className="fw-arc" style={{ position: 'absolute', inset: 60, borderRadius: '50%' }} />
-              <div className="fw-arc" style={{ position: 'absolute', inset: 60, borderRadius: '50%', animationDelay: '-4.5s' }} />
-              {([[436, 124, 45], [436, 436, 135], [124, 436, 225], [124, 124, 315]] as const).map(([x, y, a]) => (
-                <span key={a} style={{ position: 'absolute', left: x, top: y, width: 12, height: 14, clipPath: 'polygon(0 0,100% 50%,0 100%)', background: '#A3A4FF', filter: 'drop-shadow(0 0 7px rgba(163,164,255,.9))', transform: `translate(-50%,-50%) rotate(${a}deg)` }} />
-              ))}
-              {nodes.map(([t, tok, p]) => (
-                <div key={t} style={{ position: 'absolute', ...p, transform: 'translate(-50%,-50%)', display: 'flex', alignItems: 'center', gap: 9, padding: '10px 16px 10px 11px', background: 'rgba(33,28,48,.94)', border: '1px solid rgba(163,164,255,.35)', borderRadius: 999, boxShadow: '0 0 24px rgba(139,140,255,.25), inset 0 1px 0 rgba(255,255,255,.07)', whiteSpace: 'nowrap', zIndex: 2, backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}>
-                  <TokenIcon token={tok} size={22} />
-                  <span style={{ fontSize: 13.5, fontWeight: 500, color: 'var(--text-1)' }}>{t}</span>
-                </div>
-              ))}
-              <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center', zIndex: 1 }}>
-                <div className="eyebrow" style={{ fontSize: 10.5 }}>each turn</div>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 22, marginTop: 6, lineHeight: 1.3 }}>more <span className="grad-text">VARA</span> bonded</div>
-              </div>
+        <div className="fw" role="img" aria-label="The Vaultera loop: stake VARA, mint kVARA, post kVARA to borrow stables, buy VARA again.">
+          <div className="fw-ring" />
+          <div className="fw-glow" />
+          <div className="fw-arcs">
+            <div className="fw-arc" />
+            <div className="fw-arc" style={{ animationDelay: '-4.5s' }} />
+          </div>
+          {FLY_ARROWS_DESKTOP.map((a) => <span key={`d${a}`} className="fw-arrow" data-set="desktop" style={flyArrowStyle(a)} />)}
+          {FLY_ARROWS_MOBILE.map((a) => <span key={`m${a}`} className="fw-arrow" data-set="mobile" style={flyArrowStyle(a)} />)}
+          {FLY_NODES.map(([t, tok, pos]) => (
+            <div key={t} className="fw-node" data-pos={pos}>
+              <TokenIcon token={tok} size={22} />
+              <span>{t}</span>
             </div>
-          </Fit>
+          ))}
+          <div className="fw-core">
+            <div className="eyebrow">each turn</div>
+            <div className="fw-core-title">more <span className="grad-text">VARA</span> bonded</div>
+          </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {steps.map(([t, d], i) => (
-            <div key={t} style={{ display: 'flex', gap: 18, padding: '24px 0', borderTop: i ? '1px solid var(--line-1)' : 'none', alignItems: 'flex-start' }}>
-              <span style={{ width: 32, height: 32, minWidth: 32, borderRadius: 9, border: '1px solid var(--accent-line)', background: 'var(--accent-soft)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--tide-300)' }}>0{i + 1}</span>
+        <div className="fw-steps">
+          {FLY_STEPS.map(([t, d], i) => (
+            <div key={t} className="fw-step">
+              <span className="fw-step-n">0{i + 1}</span>
               <div>
-                <div style={{ fontSize: 18, fontWeight: 600, fontFamily: 'var(--font-display)', letterSpacing: 'var(--ls-heading)' }}>{t}</div>
-                <p style={{ fontSize: 14, color: 'var(--text-2)', marginTop: 6, lineHeight: 1.65, maxWidth: '50ch' }}>{d}</p>
+                <div className="fw-step-t">{t}</div>
+                <p className="fw-step-d">{d}</p>
               </div>
             </div>
           ))}

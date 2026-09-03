@@ -23,7 +23,7 @@ export function LandingNav() {
             <a key={href} className="ld-link" href={href}>{label}</a>
           ))}
         </nav>
-        <span className="ld-nav-auth" style={{ display: 'contents' }}>
+        <span className="ld-nav-auth">
           <Button size="lg" variant="secondary" to="/app" style={{ borderRadius: 10, background: '#2A2440' }}>Log in</Button>
           <Button size="lg" to="/app" style={{ borderRadius: 10 }}>Sign up</Button>
         </span>

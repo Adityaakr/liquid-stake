@@ -4,6 +4,7 @@
 .ld-nav-wrap{position:sticky;top:16px;z-index:60;padding:0 36px}
 .ld-nav{max-width:1368px;margin:0 auto;height:74px;display:flex;align-items:center;gap:12px;padding:0 14px 0 26px;background:rgba(33,28,48,.8);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.06);border-radius:14px;box-shadow:var(--shadow-card)}
 .ld-nav nav{display:flex;gap:34px;margin:0 auto}
+.ld-nav-auth{display:contents}
 .ld-nav-menu{display:none}
 .ld-nav-drop{display:none}
 .ld-container{max-width:1240px;margin:0 auto;padding:92px 32px 0;text-align:center;position:relative}
@@ -19,6 +20,30 @@
 .ld-how{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:24px;margin-top:52px}
 .ld-how>.tall{grid-row:1 / span 2}
 .ld-fly{display:grid;grid-template-columns:minmax(0,560px) 1fr;gap:48px;align-items:center;margin-top:40px}
+/* Flywheel: a square, percentage-driven composition. Nothing inside has a fixed width, so it can never push the page wider than the phone. */
+.fw{--fw-inset:10.7%;--fw-r:calc(50% - var(--fw-inset));position:relative;width:100%;max-width:560px;aspect-ratio:1/1;margin:0 auto}
+.fw-ring,.fw-glow,.fw-arcs{position:absolute;inset:var(--fw-inset);border-radius:50%}
+/* The arcs spin, so their rotated bounding box is wider than the ring; clip it here so it never adds horizontal scroll on phones. */
+.fw-arcs{overflow:hidden;contain:paint}
+.fw-arc{position:absolute;inset:0;border-radius:50%}
+.fw-ring{border:1.5px solid rgba(163,164,255,.16)}
+.fw-glow{background:radial-gradient(closest-side,rgba(139,140,255,.12),rgba(139,140,255,.03) 65%,transparent)}
+.fw-arrow{position:absolute;left:calc(50% + var(--fw-r) * var(--ax));top:calc(50% + var(--fw-r) * var(--ay));width:12px;height:14px;clip-path:polygon(0 0,100% 50%,0 100%);background:#A3A4FF;filter:drop-shadow(0 0 7px rgba(163,164,255,.9));transform:translate(-50%,-50%) rotate(var(--rot))}
+.fw-arrow[data-set=mobile]{display:none}
+.fw-node{position:absolute;z-index:2;display:flex;align-items:center;gap:9px;padding:10px 16px 10px 11px;background:rgba(33,28,48,.94);border:1px solid rgba(163,164,255,.35);border-radius:999px;box-shadow:0 0 24px rgba(139,140,255,.25),inset 0 1px 0 rgba(255,255,255,.07);white-space:nowrap;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);font-size:13.5px;font-weight:500;color:var(--text-1);transform:translate(-50%,-50%)}
+.fw-node[data-pos=top]{left:50%;top:var(--fw-inset)}
+.fw-node[data-pos=right]{left:calc(100% - var(--fw-inset));top:50%}
+.fw-node[data-pos=bottom]{left:50%;top:calc(100% - var(--fw-inset))}
+.fw-node[data-pos=left]{left:var(--fw-inset);top:50%}
+.fw-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;z-index:1;white-space:nowrap}
+.fw-core .eyebrow{font-size:10.5px}
+.fw-core-title{font-family:var(--font-display);font-weight:600;font-size:22px;margin-top:6px;line-height:1.3}
+.fw-steps{display:flex;flex-direction:column}
+.fw-step{display:flex;gap:18px;padding:24px 0;border-top:1px solid var(--line-1);align-items:flex-start}
+.fw-step:first-child{border-top:none}
+.fw-step-n{width:32px;height:32px;min-width:32px;border-radius:9px;border:1px solid var(--accent-line);background:var(--accent-soft);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;color:var(--tide-300)}
+.fw-step-t{font-size:18px;font-weight:600;font-family:var(--font-display);letter-spacing:var(--ls-heading)}
+.fw-step-d{font-size:14px;color:var(--text-2);margin-top:6px;line-height:1.65;max-width:50ch}
 .ld-params{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
 .ld-params-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px}
 .ld-foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:32px}
@@ -72,4 +97,17 @@ details.ld-faq p{color:var(--text-2);font-size:14.5px;max-width:70ch;padding:0 2
   .ld-footer-in{padding:40px 20px 28px}
   .ld-footer-bar{flex-direction:column;align-items:flex-start}
   .ld-hero-cta .t-btn{flex:1;min-width:0!important}
+}
+/* Phone flywheel: the ring is at most ~520px wide here, so the side pills would clip at the viewport. Pin them to the box edges and stagger them so they clear the centre caption and each other; the arrows follow. */
+@media (max-width:560px){
+  .fw{--fw-inset:9%}
+  .fw-node{font-size:13px;gap:8px;padding:8px 13px 8px 9px}
+  .fw-node[data-pos=right]{left:auto;right:0;top:30%;transform:translateY(-50%)}
+  .fw-node[data-pos=left]{left:0;top:70%;transform:translateY(-50%)}
+  .fw-arrow[data-set=desktop]{display:none}
+  .fw-arrow[data-set=mobile]{display:block}
+  .fw-core .eyebrow{font-size:10px}
+  .fw-core-title{font-size:19px}
+  .fw-step{gap:14px;padding:20px 0}
+  .fw-step-t{font-size:17px}
 }
