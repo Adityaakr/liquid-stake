@@ -19,9 +19,9 @@
 .ld-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 .ld-how{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:24px;margin-top:52px}
 .ld-how>.tall{grid-row:1 / span 2}
-.ld-fly{display:grid;grid-template-columns:minmax(0,560px) 1fr;gap:48px;align-items:center;margin-top:40px}
-/* Flywheel: a square, percentage-driven composition. Nothing inside has a fixed width, so it can never push the page wider than the phone. */
-.fw{--fw-inset:10.7%;--fw-r:calc(50% - var(--fw-inset));position:relative;width:100%;max-width:560px;aspect-ratio:1/1;margin:0 auto}
+.ld-fly{display:grid;grid-template-columns:minmax(0,616px) 1fr;gap:48px;align-items:center;margin-top:40px}
+/* Flywheel: a square, percentage-driven composition. Nothing inside has a fixed width, so it can never push the page wider than the phone. The ring inset is at least half the widest pill so the side pills always stay inside the box (no backdrop-filter on the pills: Safari mis-composites it when a pill overhangs its box). */
+.fw{--fw-inset:max(10.7%,88px);--fw-r:calc(50% - var(--fw-inset));isolation:isolate;position:relative;width:100%;max-width:616px;aspect-ratio:1/1;margin:0 auto}
 .fw-ring,.fw-glow,.fw-arcs{position:absolute;inset:var(--fw-inset);border-radius:50%}
 /* The arcs spin, so their rotated bounding box is wider than the ring; clip it here so it never adds horizontal scroll on phones. */
 .fw-arcs{overflow:hidden;contain:paint}
@@ -30,7 +30,7 @@
 .fw-glow{background:radial-gradient(closest-side,rgba(139,140,255,.12),rgba(139,140,255,.03) 65%,transparent)}
 .fw-arrow{position:absolute;left:calc(50% + var(--fw-r) * var(--ax));top:calc(50% + var(--fw-r) * var(--ay));width:12px;height:14px;clip-path:polygon(0 0,100% 50%,0 100%);background:#A3A4FF;filter:drop-shadow(0 0 7px rgba(163,164,255,.9));transform:translate(-50%,-50%) rotate(var(--rot))}
 .fw-arrow[data-set=mobile]{display:none}
-.fw-node{position:absolute;z-index:2;display:flex;align-items:center;gap:9px;padding:10px 16px 10px 11px;background:rgba(33,28,48,.94);border:1px solid rgba(163,164,255,.35);border-radius:999px;box-shadow:0 0 24px rgba(139,140,255,.25),inset 0 1px 0 rgba(255,255,255,.07);white-space:nowrap;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);font-size:13.5px;font-weight:500;color:var(--text-1);transform:translate(-50%,-50%)}
+.fw-node{position:absolute;z-index:2;display:flex;align-items:center;gap:9px;padding:10px 16px 10px 11px;background:rgba(33,28,48,.94);border:1px solid rgba(163,164,255,.35);border-radius:999px;box-shadow:0 0 24px rgba(139,140,255,.25),inset 0 1px 0 rgba(255,255,255,.07);white-space:nowrap;font-size:13.5px;font-weight:500;color:var(--text-1);transform:translate(-50%,-50%)}
 .fw-node[data-pos=top]{left:50%;top:var(--fw-inset)}
 .fw-node[data-pos=right]{left:calc(100% - var(--fw-inset));top:50%}
 .fw-node[data-pos=bottom]{left:50%;top:calc(100% - var(--fw-inset))}
@@ -70,8 +70,6 @@ details.ld-faq p{color:var(--text-2);font-size:14.5px;max-width:70ch;padding:0 2
 
 @media (max-width:1100px){
   .ld-fly{grid-template-columns:1fr;gap:24px}
-  /* Single column: the box is at most 560px and sits 20px from the viewport, so give the ring enough inset that the side pills stay inside the box instead of touching the screen edge. */
-  .fw{--fw-inset:15%}
 }
 @media (max-width:960px){
   .ld-nav-wrap{padding:0 16px;top:12px}
@@ -102,8 +100,8 @@ details.ld-faq p{color:var(--text-2);font-size:14.5px;max-width:70ch;padding:0 2
   .ld-footer-bar{flex-direction:column;align-items:flex-start}
   .ld-hero-cta .t-btn{flex:1;min-width:0!important}
 }
-/* Phone flywheel: the ring is at most ~520px wide here, so the side pills would clip at the viewport. Pin them to the box edges and stagger them so they clear the centre caption and each other; the arrows follow. */
-@media (max-width:560px){
+/* Narrow flywheel (phones and small tablets): the box is under 600px, so pills centred on the ring would crowd the centre caption. Pin them to the box edges and stagger them so they clear the caption and each other; the arrows follow. */
+@media (max-width:640px){
   .fw{--fw-inset:9%}
   .fw-node{font-size:13px;gap:8px;padding:8px 13px 8px 9px}
   .fw-node[data-pos=right]{left:auto;right:0;top:30%;transform:translateY(-50%)}
