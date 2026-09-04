@@ -72,7 +72,7 @@ export function PortfolioPage() {
                     <td>{r.amt}</td>
                     <td style={{ color: 'var(--text-2)' }}>{r.rate}</td>
                     <td>{r.val}</td>
-                    <td style={{ color: 'var(--tide-300)' }}>{r.apy}</td>
+                    <td style={{ color: 'var(--fx-indigo)' }}>{r.apy}</td>
                     <td><Badge tone={r.status[0]} size="sm" dot>{r.status[1]}</Badge></td>
                   </tr>
                 ))}

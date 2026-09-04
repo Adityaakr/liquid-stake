@@ -80,13 +80,13 @@ function VaultCard({ asset }: { asset: VaultAsset }) {
 
 function FlowChip({ tok, label }: { tok?: TokenSymbol; label: string }) {
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(33,28,48,.9)', border: '1px solid rgba(163,164,255,.3)', borderRadius: 99, padding: '8px 14px 8px 9px', whiteSpace: 'nowrap' }}>
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', border: '1px solid var(--fx-mist)', borderRadius: 99, padding: '8px 14px 8px 9px', whiteSpace: 'nowrap' }}>
       {tok ? <TokenIcon token={tok} size={20} /> : null}
       <span style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text-1)' }}>{label}</span>
     </span>
   );
 }
-const Arrow = () => <ChevronRight size={15} strokeWidth={1.5} style={{ color: 'var(--tide-400)', opacity: 0.85, flexShrink: 0 }} />;
+const Arrow = () => <ChevronRight size={15} strokeWidth={1.5} style={{ color: 'var(--fx-indigo)', flexShrink: 0 }} />;
 
 export function VaultsPage() {
   const { notify } = useStore();
@@ -108,7 +108,7 @@ export function VaultsPage() {
             </div>
             <div style={{ display: 'flex', gap: 8, marginTop: 2, flexWrap: 'wrap' }}>
               {['max LTV 50%', 'liq. threshold 65%', 'penalty 8%', 'kink 80%'].map((t) => (
-                <span key={t} style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '.05em', color: 'var(--text-3)', border: '1px solid var(--line-1)', borderRadius: 99, padding: '4px 10px' }}>{t}</span>
+                <span key={t} style={{ fontFamily: 'var(--font-body)', fontSize: 12.5, color: 'var(--text-2)', background: '#fff', borderRadius: 99, padding: '5px 12px' }}>{t}</span>
               ))}
             </div>
           </div>

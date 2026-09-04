@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider, ScrollRestoration, Outlet, useRouteError } from 'react-router';
 import { StoreProvider } from '@/chain/store';
 import { LandingPage } from '@/landing/LandingPage';
+import { FeaturesPage } from '@/landing/FeaturesPage';
 import { AppLayout } from '@/app/AppLayout';
 import { StakePage } from '@/app/StakePage';
 import { VaultsPage } from '@/app/VaultsPage';
@@ -34,7 +35,7 @@ function NotFound() {
   return (
     <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', textAlign: 'center', padding: 24 }}>
       <div>
-        <div className="eyebrow" style={{ color: 'var(--tide-400)', marginBottom: 12 }}>404</div>
+        <div className="eyebrow" style={{ color: 'var(--fx-indigo)', marginBottom: 12 }}>404</div>
         <h1 style={{ fontSize: 40, fontWeight: 600 }}>Nothing here.</h1>
         <p style={{ color: 'var(--text-2)', marginTop: 10 }}><a href="/">Back to vaultera</a></p>
       </div>
@@ -48,6 +49,7 @@ export const routes = [
     errorElement: <RouteError />,
     children: [
       { path: '/', element: <LandingPage /> },
+      { path: '/features', element: <FeaturesPage /> },
       {
         path: '/app',
         element: <AppLayout />,

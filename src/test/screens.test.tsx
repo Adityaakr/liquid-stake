@@ -37,11 +37,11 @@ async function connectDemo(user: ReturnType<typeof userEvent.setup>) {
 describe('landing', () => {
   it('renders every section of the kit', () => {
     mount('/');
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/One stake, endless/);
-    for (const h of ['Everything you need to', 'Every loop feeds the next.', 'One prefix. Every receipt.', 'Two ways out. Always.', 'Conservative by design.', 'Fair questions.', 'Put your VARA to work.']) {
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/Liquid[\s\S]*Staking/);
+    for (const h of ['Smarter staking starts with liquidity', 'Everything you need to stake confidently', 'See your staking in action', 'Start staking in minutes', 'Your stake is protected at every level', 'Who this protocol is built for', 'Connect with the tools you already use', 'Powering smarter staking decisions', 'What stakers say about the protocol', 'Transparent fees without hidden costs', 'Frequently asked questions', 'Ready to stake smarter?']) {
       expect(screen.getByRole('heading', { level: 2, name: new RegExp(h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) })).toBeInTheDocument();
     }
-    expect(screen.getAllByRole('link', { name: /Go to stake/ })[0]).toHaveAttribute('href', '/app');
+    expect(screen.getAllByRole('link', { name: /Start staking now/ })[0]).toHaveAttribute('href', '/app');
     expect(screen.getAllByText(/kVARA/).length).toBeGreaterThan(3);
   });
 });

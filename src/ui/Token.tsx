@@ -20,7 +20,7 @@ const META: Record<TokenSymbol, { letter: string; color: string; src: string; re
 function ReceiptBadge({ size }: { size: number }) {
   const s = Math.max(10, Math.round(size * 0.42));
   return (
-    <span aria-hidden style={{ position: 'absolute', right: -Math.round(s * 0.18), bottom: -Math.round(s * 0.18), width: s, height: s, borderRadius: 99, background: 'linear-gradient(180deg,#C6C7FF,#8B8CFF)', border: `${Math.max(1, Math.round(size * 0.05))}px solid #1B1626`, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: s * 0.62, lineHeight: 1, color: '#1B1726' }}>
+    <span aria-hidden style={{ position: 'absolute', right: -Math.round(s * 0.18), bottom: -Math.round(s * 0.18), width: s, height: s, borderRadius: 99, background: 'linear-gradient(135deg,#406AE4,#5290F4)', border: `${Math.max(1, Math.round(size * 0.05))}px solid #FFFFFF`, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: s * 0.62, lineHeight: 1, color: '#FFFFFF' }}>
       k
     </span>
   );

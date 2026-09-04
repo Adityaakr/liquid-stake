@@ -1,44 +1,44 @@
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import { Button, IconButton } from '@/ui';
+import { Link, NavLink } from 'react-router';
+import { Layers } from 'lucide-react';
+import { BtnIcon } from './fx';
 
-export function Wordmark({ size = 24, color = 'var(--text-1)', href = '#top' }: { size?: number; color?: string; href?: string }) {
+export function Wordmark({ size = 24, href = '/', light }: { size?: number; href?: string; light?: boolean }) {
   return (
-    <a href={href} aria-label="vaultera home" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: size, letterSpacing: '-0.02em', color, textDecoration: 'none', lineHeight: 1 }}>
+    <Link to={href} aria-label="vaultera home" className="fx-wordmark" style={{ fontSize: size, color: light ? '#fff' : undefined }}>
+      <span className="fx-wordmark-mark" style={{ width: size * 1.33, height: size * 1.33, borderRadius: size * 0.38, background: light ? '#fff' : undefined, color: light ? '#1D1D1D' : undefined }}><Layers size={size * 0.7} strokeWidth={2.2} /></span>
       vaultera
-    </a>
+    </Link>
   );
 }
 
-const LINKS = [['#how', 'Features'], ['#tokens', 'Tokens'], ['#security', 'Security'], ['#faq', 'FAQ']] as const;
+const LINKS = [['/#products', 'Products'], ['/#features', 'Features'], ['/#use-cases', 'Use Cases'], ['/features', 'Product']] as const;
 
 export function LandingNav() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="ld-nav-wrap">
-      <div className="ld-nav">
-        <Wordmark />
-        <nav aria-label="Primary">
-          {LINKS.map(([href, label]) => (
-            <a key={href} className="ld-link" href={href}>{label}</a>
-          ))}
-        </nav>
-        <span className="ld-nav-auth">
-          <Button size="lg" variant="secondary" to="/app" style={{ borderRadius: 10, background: '#2A2440' }}>Log in</Button>
-          <Button size="lg" to="/app" style={{ borderRadius: 10 }}>Sign up</Button>
-        </span>
-        <IconButton className="ld-nav-menu" label={open ? 'Close menu' : 'Open menu'} variant="outline" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-          {open ? <X size={18} strokeWidth={1.5} /> : <Menu size={18} strokeWidth={1.5} />}
-        </IconButton>
-      </div>
-      {open && (
-        <div className="ld-nav-drop" role="menu">
-          {LINKS.map(([href, label]) => (
-            <a key={href} className="ld-link" href={href} onClick={() => setOpen(false)} role="menuitem">{label}</a>
-          ))}
-          <Button size="lg" to="/app" block style={{ borderRadius: 10, marginTop: 6 }}>Go to stake</Button>
+    <div className="fx-nav-wrap">
+      <div className="fx-nav">
+        <div className="fx-nav-in">
+          <div className="fx-nav-left"><Wordmark /></div>
+          <nav className="fx-nav-menu" aria-label="Primary">
+            {LINKS.map(([href, label]) => href.startsWith('/#')
+              ? <a key={href} className="fx-navlink" href={href}>{label}</a>
+              : <NavLink key={href} className="fx-navlink" to={href}>{label}</NavLink>)}
+          </nav>
+          <div className="fx-nav-right">
+            <BtnIcon variant="nav" to="/app">Launch app</BtnIcon>
+            <button type="button" className="fx-nav-burger" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen((o) => !o)} />
+          </div>
         </div>
-      )}
+        {open && (
+          <div className="fx-nav-drop" role="menu">
+            {LINKS.map(([href, label]) => href.startsWith('/#')
+              ? <a key={href} className="fx-navlink" href={href} role="menuitem" onClick={() => setOpen(false)}>{label}</a>
+              : <NavLink key={href} className="fx-navlink" to={href} role="menuitem" onClick={() => setOpen(false)}>{label}</NavLink>)}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

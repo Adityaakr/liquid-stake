@@ -2,12 +2,12 @@ import type { CSSProperties, HTMLAttributes, ReactNode } from 'react';
 
 export type Tone = 'neutral' | 'accent' | 'ok' | 'warn' | 'danger' | 'info';
 const T: Record<Tone, [string, string, string]> = {
-  neutral: ['var(--text-2)', 'var(--line-2)', 'transparent'],
-  accent: ['var(--tide-300)', 'var(--accent-line)', 'var(--accent-soft)'],
-  ok: ['var(--ok)', 'rgba(54,236,189,.35)', 'var(--ok-soft)'],
-  warn: ['var(--warn)', 'rgba(255,194,75,.35)', 'var(--warn-soft)'],
-  danger: ['var(--danger)', 'rgba(255,107,122,.35)', 'var(--danger-soft)'],
-  info: ['var(--info)', 'rgba(91,209,255,.35)', 'var(--info-soft)'],
+  neutral: ['var(--text-2)', 'var(--fx-lgb)', 'var(--fx-lgb)'],
+  accent: ['var(--fx-indigo)', 'rgba(64,106,228,.25)', 'var(--accent-soft)'],
+  ok: ['var(--ok)', 'rgba(16,185,129,.3)', 'var(--ok-soft)'],
+  warn: ['var(--warn)', 'rgba(255,139,6,.3)', 'var(--warn-soft)'],
+  danger: ['var(--danger)', 'rgba(255,13,13,.3)', 'var(--danger-soft)'],
+  info: ['var(--info)', 'rgba(59,130,246,.3)', 'var(--info-soft)'],
 };
 
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
@@ -32,7 +32,7 @@ export function Badge({ tone = 'neutral', dot, mono, size = 'md', children, styl
       }}
       {...rest}
     >
-      {dot && <span style={{ width: 6, height: 6, borderRadius: 99, background: c, boxShadow: `0 0 8px ${c}` }} />}
+      {dot && <span style={{ width: 6, height: 6, borderRadius: 99, background: c }} />}
       {children}
     </span>
   );

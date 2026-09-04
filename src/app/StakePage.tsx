@@ -71,8 +71,8 @@ export function StakePage() {
   return (
     <div className="ap-stake">
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'var(--surface-card)', border: '1px solid var(--line-1)', borderRadius: 16, padding: '12px 18px', flexWrap: 'wrap' }}>
-          <span style={{ width: 30, height: 30, borderRadius: 99, background: 'var(--surface-raised)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-2)' }}><Wallet size={14} strokeWidth={1.5} /></span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'var(--fx-lgb)', border: '1px solid var(--fx-lgb)', borderRadius: 20, padding: '12px 18px', flexWrap: 'wrap' }}>
+          <span style={{ width: 30, height: 30, borderRadius: 99, background: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-2)' }}><Wallet size={14} strokeWidth={1.5} /></span>
           <span style={{ fontSize: 13.5, color: 'var(--text-2)' }}>Wallet balance</span>
           {account ? (
             balancesError ? <span style={{ marginLeft: 'auto', fontSize: 13, color: 'var(--danger)' }}>{balancesError}</span> : (
@@ -123,13 +123,13 @@ export function StakePage() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         <div className="ap-grid-2">
-          <div style={{ borderRadius: 20, background: 'var(--tide-400)', padding: '18px 18px 20px', boxShadow: '0 18px 44px -18px rgba(163,164,255,.45)' }}>
-            <div className="eyebrow" style={{ fontSize: 10.5, color: 'rgba(27,23,38,.65)' }}>TVL</div>
-            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 27, color: '#1B1726', marginTop: 6 }}>{stats ? formatCompactUsd(stats.tvlUsd) : '…'}</div>
+          <div style={{ borderRadius: 24, background: 'var(--grad-primary)', padding: '18px 18px 20px' }}>
+            <div className="eyebrow" style={{ color: 'rgba(255,255,255,.85)' }}>TVL</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 27, color: '#fff', marginTop: 6 }}>{stats ? formatCompactUsd(stats.tvlUsd) : '…'}</div>
           </div>
           <Bento variant="app" pad={18}>
             <Eyebrow>APY</Eyebrow>
-            <div className="grad-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 27, marginTop: 6 }}>{stats ? bpsToPercent(stats.stakeApyBps) : '…'}</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 27, marginTop: 6, color: 'var(--text-1)' }}>{stats ? bpsToPercent(stats.stakeApyBps) : '…'}</div>
           </Bento>
         </div>
         <Bento variant="app" pad={20}>
@@ -148,8 +148,8 @@ export function StakePage() {
                 const hot = i === arr.length - 1;
                 return (
                   <div key={h.era} style={{ textAlign: 'center', position: 'relative' }}>
-                    {hot && stats ? <span style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: -26, fontFamily: 'var(--font-mono)', fontSize: 10.5, background: 'var(--surface-raised)', border: '1px solid var(--accent-line)', borderRadius: 7, padding: '2px 7px', color: 'var(--tide-300)', whiteSpace: 'nowrap' }}>{formatRate(h.rate)}</span> : null}
-                    <div style={{ width: 12, height: 12, borderRadius: 99, margin: '0 auto', background: hot ? 'var(--tide-400)' : 'var(--ink-600)', boxShadow: hot ? '0 0 12px rgba(163,164,255,.9)' : 'none', border: '2px solid var(--ink-800)' }} />
+                    {hot && stats ? <span style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: -26, fontFamily: 'var(--font-mono)', fontSize: 10.5, background: '#fff', border: '1px solid var(--accent-line)', borderRadius: 7, padding: '2px 7px', color: 'var(--fx-indigo)', whiteSpace: 'nowrap' }}>{formatRate(h.rate)}</span> : null}
+                    <div style={{ width: 12, height: 12, borderRadius: 99, margin: '0 auto', background: hot ? 'var(--fx-indigo)' : 'var(--ink-600)', border: '2px solid #fff' }} />
                     <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-3)', marginTop: 7 }}>era {stats ? h.era.toLocaleString('en-US') : '—'}</div>
                   </div>
                 );

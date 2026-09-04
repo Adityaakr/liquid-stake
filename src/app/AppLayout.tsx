@@ -13,8 +13,8 @@ const TITLES: Record<string, string> = { '/app': 'Stake', '/app/vaults': 'Stable
 
 function GlowBar({ pct, height = 6 }: { pct: number; height?: number }) {
   return (
-    <div style={{ position: 'relative', height, background: 'var(--ink-700)', borderRadius: 99, overflow: 'hidden' }}>
-      <div style={{ width: `${pct}%`, height: '100%', borderRadius: 99, background: 'var(--grad-tide)', boxShadow: '0 0 12px rgba(163,164,255,.7)' }} />
+    <div style={{ position: 'relative', height, background: 'var(--fx-mist)', borderRadius: 99, overflow: 'hidden' }}>
+      <div style={{ width: `${pct}%`, height: '100%', borderRadius: 99, background: 'var(--grad-primary)' }} />
     </div>
   );
 }
@@ -34,7 +34,7 @@ function NetworkCard() {
   return (
     <Bento variant="app" pad={14}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--text-1)', fontWeight: 500 }}>
-        <span style={{ width: 7, height: 7, borderRadius: 99, background: 'var(--ok)', boxShadow: '0 0 10px var(--ok)' }} />
+        <span style={{ width: 7, height: 7, borderRadius: 99, background: 'var(--ok)' }} />
         {NETWORKS[network].label}
         {adapter.simulated && <Badge size="sm" tone="warn" style={{ marginLeft: 'auto' }}>simulation</Badge>}
       </div>
@@ -65,7 +65,7 @@ function Sidebar() {
           <NavLink key={to} to={to} end={end} className="ap-nav"><Icon size={17} strokeWidth={1.5} />{label}</NavLink>
         ))}
       </nav>
-      <div className="eyebrow" style={{ fontSize: 10.5, margin: '24px 13px 8px' }}>Resources</div>
+      <div className="eyebrow" style={{ fontSize: 12.5, margin: '24px 13px 8px' }}>Resources</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         <a className="ap-nav" href="https://wiki.vara.network/" target="_blank" rel="noreferrer"><BookOpen size={17} strokeWidth={1.5} />Docs</a>
         <a className="ap-nav" href="/#security"><ShieldCheck size={17} strokeWidth={1.5} />Audits</a>
@@ -86,7 +86,7 @@ function TopBar({ onWallet }: { onWallet: () => void }) {
         <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 19, letterSpacing: 'var(--ls-heading)', lineHeight: 1.2 }}>{title}</div>
       </div>
       <span className="ap-pill ap-rate" style={{ marginLeft: 'auto' }}>
-        1 kVARA = <span style={{ color: 'var(--tide-300)' }} className={stats ? undefined : 'skeleton'}>{stats ? formatRate(stats.rate) : '0.0000'}</span> VARA
+        1 kVARA = <span style={{ color: 'var(--fx-indigo)', fontWeight: 600 }} className={stats ? undefined : 'skeleton'}>{stats ? formatRate(stats.rate) : '0.0000'}</span> VARA
       </span>
       {account ? (
         <button type="button" onClick={onWallet} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', marginLeft: stats ? 0 : 'auto' }} aria-label="Account">
@@ -116,11 +116,6 @@ export function AppLayout() {
   useEffect(() => { document.title = `${TITLES[pathname] ?? 'Vaultera'} · Vaultera app`; }, [pathname]);
   return (
     <div className="ap-root">
-      <div className="ap-bg" aria-hidden>
-        <div style={{ position: 'absolute', left: '55%', top: -260, transform: 'translateX(-50%)', width: 1000, height: 520, background: 'radial-gradient(closest-side,rgba(139,140,255,.16),transparent)', filter: 'blur(26px)' }} />
-        <div style={{ position: 'absolute', right: -160, bottom: -200, width: 640, height: 480, background: 'radial-gradient(closest-side,rgba(139,140,255,.10),transparent)', filter: 'blur(24px)' }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'var(--dot-grid)', backgroundSize: 'var(--dot-grid-size)', opacity: 0.4, maskImage: 'radial-gradient(760px 380px at 60% 0%,#000 20%,transparent)', WebkitMaskImage: 'radial-gradient(760px 380px at 60% 0%,#000 20%,transparent)' }} />
-      </div>
       <Sidebar />
       <main className="ap-main">
         <TopBar onWallet={() => setWalletOpen(true)} />

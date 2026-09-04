@@ -18,7 +18,7 @@ export function WalletDialog({ open, onClose }: { open: boolean; onClose: () => 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {(accounts.length ? accounts : [account]).map((a) => (
             <button key={a.address} type="button" className="ap-acct" aria-pressed={a.address === account.address} onClick={() => { selectAccount(a); }}>
-              <span style={{ width: 34, height: 34, borderRadius: 99, background: 'var(--surface-raised)', border: '1px solid var(--line-2)', flexShrink: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--tide-300)' }}>{(a.name ?? a.address).slice(0, 1).toUpperCase()}</span>
+              <span style={{ width: 34, height: 34, borderRadius: 99, background: 'var(--fx-lgb)', border: '1px solid var(--fx-mist)', flexShrink: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 14, color: 'var(--fx-indigo)' }}>{(a.name ?? a.address).slice(0, 1).toUpperCase()}</span>
               <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                 <span style={{ fontSize: 14, fontWeight: 600 }}>{a.name ?? 'Account'}</span>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-3)' }}>{shortAddress(a.address, 8, 6)}</span>

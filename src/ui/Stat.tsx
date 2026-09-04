@@ -23,7 +23,7 @@ export function Stat({ label, value, sub, size = 'md', gradient, mono, align = '
       <span className="eyebrow">{label}</span>
       <span
         className={loading ? 'skeleton' : undefined}
-        style={{ fontFamily: mono ? 'var(--font-mono)' : 'var(--font-display)', fontWeight: 600, fontSize: FS[size], lineHeight: 1.05, letterSpacing: 'var(--ls-num)', minWidth: loading ? 96 : undefined, ...grad }}
+        style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: FS[size], lineHeight: 1.1, letterSpacing: mono ? '-0.01em' : '-0.02em', minWidth: loading ? 96 : undefined, ...grad }}
       >
         {value}
       </span>

@@ -1,291 +1,365 @@
-import type { CSSProperties, ReactNode } from 'react';
-import { Hourglass, Zap } from 'lucide-react';
-import { Badge, Bento, Fit, Stat, TokenBadge, TokenIcon, type TokenSymbol } from '@/ui';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { ArrowLeftRight, Bell, Boxes, Coins, Globe, Layers, Lightbulb, Link2, Lock, Repeat, Rocket, ShieldCheck, Sparkles, Timer, Users, Wallet, Zap } from 'lucide-react';
+import { TokenIcon } from '@/ui';
+import { Badge, BgItem, Btn, BtnIcon, Container, FounderCard, ListItem, OverviewCard, PreTitle, Section, StatItem, StatLGCard, StepSwitcher, TestimonialItem, Ticker, UseCaseCard } from './fx';
 
-export function Sec({ id, eyebrow, title, sub, children, right }: { id?: string; eyebrow?: string; title?: ReactNode; sub?: ReactNode; children?: ReactNode; right?: ReactNode }) {
+const FX = '/fx/';
+
+/* ---------- Comparison: before / after ---------- */
+export function Comparison() {
+  const [side, setSide] = useState<'before' | 'after'>('before');
+  const spacer = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = spacer.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) setSide('after'); }, { threshold: 0.6 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const before = ['Staked VARA is locked for a full 7-day unbonding period', 'No way to put staked capital to work in DeFi', 'Rewards need manual claiming and re-staking', 'Below 50 VARA you cannot nominate at all'];
+  const after = ['Get kVARA instantly and exit through the buffer or DEX', 'Post kVARA as collateral, borrow stables, loop your stake', 'Rewards compound into the rate every era, no claiming ever', 'Any amount is pooled and nominated together'];
   return (
-    <section id={id} className="ld-sec">
-      <div className="ld-sec-head">
-        <div>
-          {eyebrow && <div className="eyebrow" style={{ color: 'var(--tide-400)', marginBottom: 14 }}>{eyebrow}</div>}
-          {title && <h2>{title}</h2>}
-          {sub && <p className="ld-sec-sub">{sub}</p>}
-        </div>
-        {right}
-      </div>
-      {children}
-    </section>
-  );
-}
-
-export function DotPatch({ style }: { style?: CSSProperties }) {
-  return <div className="ld-dots" aria-hidden style={{ width: 300, height: 130, backgroundImage: 'var(--dot-grid)', backgroundSize: '14px 14px', maskImage: 'radial-gradient(closest-side,#000 30%,transparent)', WebkitMaskImage: 'radial-gradient(closest-side,#000 30%,transparent)', flexShrink: 0, ...style }} />;
-}
-
-export function BentoText({ title, children, style }: { title: string; children: ReactNode; style?: CSSProperties }) {
-  return (
-    <div style={style}>
-      <h3 style={{ fontSize: 27, fontWeight: 600, letterSpacing: 'var(--ls-heading)' }}>{title}</h3>
-      <p style={{ fontSize: 15, color: 'var(--text-2)', marginTop: 10, lineHeight: 1.7, maxWidth: '46ch' }}>{children}</p>
-    </div>
-  );
-}
-
-const STATS: [string, string, string][] = [
-  ['VARA staked', '8.6M+', 'across a curated validator set'],
-  ['kVARA holders', '12.4K+', 'wallets, pools and vaults'],
-  ['Paid to stakers', '940K', 'VARA, compounded era by era'],
-];
-
-export function StatsBand() {
-  return (
-    <div className="ld-band">
-      <div className="ld-grid-3">
-        {STATS.map(([l, v, s]) => (
-          <Bento key={l} pad={34} style={{ textAlign: 'center' }}>
-            <Stat label={l} value={v} sub={s} gradient size="lg" align="center" />
-          </Bento>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Cube({ size = 54, style }: { size?: number; style?: CSSProperties }) {
-  const F = (pts: string, bg: string, k: number) => <div key={k} style={{ position: 'absolute', inset: 0, clipPath: `polygon(${pts})`, background: bg }} />;
-  return (
-    <div style={{ position: 'absolute', width: size, height: size * 1.16, filter: 'drop-shadow(0 8px 16px rgba(139,140,255,.35))', ...style }}>
-      {F('50% 0,100% 25%,50% 50%,0 25%', 'linear-gradient(135deg,#FFFFFF,#C6C7FF)', 0)}
-      {F('100% 25%,100% 75%,50% 100%,50% 50%', 'linear-gradient(180deg,#A3A4FF,#7576D8)', 1)}
-      {F('0 25%,50% 50%,50% 100%,0 75%', 'linear-gradient(180deg,#8B8CFF,#6062C0)', 2)}
-    </div>
-  );
-}
-
-function Vault() {
-  return (
-    <div style={{ position: 'absolute', left: 196, top: 16, width: 252, height: 316, filter: 'drop-shadow(0 34px 54px rgba(0,0,0,.55)) drop-shadow(0 0 40px rgba(139,140,255,.25))' }}>
-      <div style={{ position: 'absolute', inset: 0, borderRadius: 32, background: 'linear-gradient(180deg,#8B8CFF,#5F60C8)', boxShadow: 'inset 0 2px 0 rgba(255,255,255,.22)' }} />
-      <div style={{ position: 'absolute', right: -7, top: 62, width: 13, height: 36, borderRadius: 7, background: '#3A3568' }} />
-      <div style={{ position: 'absolute', right: -7, bottom: 62, width: 13, height: 36, borderRadius: 7, background: '#3A3568' }} />
-      <div style={{ position: 'absolute', inset: 13, borderRadius: 25, background: 'linear-gradient(160deg,#9EA0FF,#6E6FD8)', border: '1px solid rgba(255,255,255,.14)', boxShadow: 'inset 0 -14px 30px rgba(20,12,70,.45)' }} />
-      <div style={{ position: 'absolute', left: 38, top: 38, width: 66, height: 22, borderRadius: 99, background: 'rgba(40,28,110,.5)' }} />
-      <div style={{ position: 'absolute', left: 30, top: 154, width: 50, height: 16, borderRadius: 99, background: '#4A448C', boxShadow: 'inset 0 2px 3px rgba(0,0,0,.4), 0 1px 0 rgba(255,255,255,.15)' }} />
-      <div style={{ position: 'absolute', right: 44, top: 140, width: 66, height: 66, borderRadius: 99, background: 'linear-gradient(180deg,#C6C7FF,#7778E0)', border: '5px solid #4A448C', boxShadow: '0 0 0 3px rgba(255,255,255,.07), inset 0 2px 4px rgba(255,255,255,.3)' }}>
-        <div style={{ position: 'absolute', inset: 13, clipPath: 'polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)', background: '#2A2440' }} />
-      </div>
-    </div>
-  );
-}
-
-const WIRE = 'rgba(154,130,255,.35)';
-
-function StakeIllo() {
-  return (
-    <div style={{ margin: '26px 0 10px' }}>
-      <Fit width={470} height={360}>
-        <div style={{ position: 'relative', width: 470, height: 360 }}>
-          {[57, 179, 301].map((y) => <div key={y} style={{ position: 'absolute', left: 96, top: y, width: 56, borderTop: `1.5px solid ${WIRE}` }} />)}
-          <div style={{ position: 'absolute', left: 152, top: 57, width: 1.5, height: 244, background: WIRE, borderRadius: 2 }} />
-          <div style={{ position: 'absolute', left: 152, top: 178, width: 46, borderTop: `1.5px solid ${WIRE}` }} />
-          <Cube style={{ left: 36, top: 26 }} /><Cube style={{ left: 36, top: 148 }} /><Cube style={{ left: 36, top: 270 }} />
-          <Vault />
-        </div>
-      </Fit>
-    </div>
-  );
-}
-
-function MiniTile({ token, style }: { token: TokenSymbol; style: CSSProperties }) {
-  return (
-    <div style={{ position: 'absolute', width: 98, height: 98, borderRadius: 24, background: 'linear-gradient(180deg,#2A2160,#151038)', border: '1.5px solid rgba(163,164,255,.5)', boxShadow: '0 0 28px rgba(139,140,255,.3), inset 0 1px 0 rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2, ...style }}>
-      <TokenIcon token={token} size={54} style={{ filter: 'drop-shadow(0 0 14px rgba(139,140,255,.5))' }} />
-    </div>
-  );
-}
-
-function SwapIllo() {
-  return (
-    <div style={{ position: 'relative', height: 210, margin: '6px 0 2px' }}>
-      <div style={{ position: 'absolute', left: 0, right: 0, top: 66, borderTop: '1px solid rgba(163,164,255,.14)' }} />
-      <div style={{ position: 'absolute', left: 0, right: 0, top: 144, borderTop: '1px solid rgba(163,164,255,.14)' }} />
-      {[88, 104, 120].map((y) => <div key={y} style={{ position: 'absolute', left: '42%', top: y, width: '16%', borderTop: '2px dashed rgba(163,164,255,.45)' }} />)}
-      <span className="bd-streak" style={{ left: '40%', top: 95, '--d': '140px', width: 52, animationDelay: '.4s' } as CSSProperties} />
-      <span className="bd-streak" style={{ left: '42%', top: 127, '--d': '120px', width: 44, animationDelay: '1.8s' } as CSSProperties} />
-      <MiniTile token="kVARA" style={{ left: '14%', top: 56 }} />
-      <MiniTile token="VARA" style={{ right: '14%', top: 56 }} />
-    </div>
-  );
-}
-
-function BorrowIllo() {
-  const dash: CSSProperties = { width: 44, borderTop: '2px dashed rgba(163,164,255,.5)' };
-  return (
-    <div style={{ position: 'relative', minHeight: 230, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
-      <Fit width={352} height={132}>
-        <div style={{ position: 'relative', width: 352, height: 132, borderRadius: 99, background: 'linear-gradient(180deg,#443D6E,#2A2440)', border: '1.5px solid rgba(163,164,255,.45)', boxShadow: '0 0 54px rgba(139,140,255,.35), inset 0 2px 0 rgba(255,255,255,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ width: 292, height: 92, borderRadius: 99, background: '#1C1729', border: '1px solid rgba(139,140,255,.35)', boxShadow: 'inset 0 4px 16px rgba(0,0,0,.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
-            <TokenIcon token="wUSDT" size={30} style={{ opacity: 0.75 }} />
-            <span style={dash} />
-            <span style={{ width: 58, height: 58, minWidth: 58, borderRadius: 99, background: 'radial-gradient(circle at 32% 28%,#A3A4FF,#8B8CFF)', boxShadow: '0 0 30px rgba(163,164,255,.9), inset 0 2px 4px rgba(255,255,255,.35)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><TokenIcon token="kVARA" size={44} /></span>
-            <span style={dash} />
-            <TokenIcon token="wUSDC" size={30} style={{ opacity: 0.75 }} />
-          </div>
-        </div>
-      </Fit>
-      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '.08em', color: 'var(--text-3)', border: '1px solid var(--line-2)', borderRadius: 99, padding: '5px 12px', background: 'rgba(33,28,48,.7)' }}>
-        collateral: kVARA · max LTV <span style={{ color: 'var(--tide-300)' }}>50%</span>
-      </span>
-    </div>
-  );
-}
-
-export function HowItWorks() {
-  return (
-    <Sec id="how" title={<>Everything you need to<br />grow your assets</>} right={<DotPatch style={{ marginTop: 12 }} />}>
-      <div className="ld-how">
-        <Bento pad={30} className="tall">
-          <StakeIllo />
-          <BentoText title="Stake" style={{ marginTop: 'auto', paddingTop: 26 }}>Stake VARA through Vaultera to obtain kVARA — instant redemption in minutes, or a free native unbond in 7 days.</BentoText>
-        </Bento>
-        <Bento pad={30}>
-          <BentoText title="Swap">Seamless exits at the market rate — the liquidity buffer fills instantly, the DEX backstops it.</BentoText>
-          <SwapIllo />
-        </Bento>
-        <Bento pad={30}>
-          <BorrowIllo />
-          <BentoText title="Borrowing" style={{ marginTop: 'auto', paddingTop: 22 }}>Post kVARA as the only collateral, borrow wUSDT or wUSDC, and loop your stake.</BentoText>
-        </Bento>
-      </div>
-    </Sec>
-  );
-}
-
-type FlyPos = 'top' | 'right' | 'bottom' | 'left';
-const FLY_NODES: [string, TokenSymbol, FlyPos][] = [
-  ['Stake VARA', 'VARA', 'top'],
-  ['Mint kVARA', 'kVARA', 'right'],
-  ['Post kVARA, borrow stables', 'wUSDT', 'bottom'],
-  ['Buy VARA again', 'VARA', 'left'],
-];
-/** Arrow heads sit on the ring at these screen angles (0 = right, clockwise) and point along it. */
-const FLY_ARROWS_DESKTOP = [-45, 45, 135, 225];
-/** On phones the side pills are staggered, so the arrows move to stay between the pills. */
-const FLY_ARROWS_MOBILE = [-55, 25, 130, 205];
-const FLY_STEPS: [string, string][] = [
-  ['Network security rises', 'Every borrowed stable buys VARA that gets bonded back to validators.'],
-  ['Stable yield rises', 'More loop demand means more borrow interest paid to kUSDT and kUSDC holders.'],
-  ['The backstop deepens', 'Protocol fees fill the insurance fund before anyone pays the treasury.'],
-];
-
-function flyArrowStyle(deg: number): CSSProperties {
-  const rad = (deg * Math.PI) / 180;
-  return { '--ax': Math.cos(rad).toFixed(4), '--ay': Math.sin(rad).toFixed(4), '--rot': `${deg + 90}deg` } as CSSProperties;
-}
-
-export function Flywheel() {
-  return (
-    <Sec eyebrow="The flywheel" title="Every loop feeds the next.">
-      <div className="ld-fly">
-        <div className="fw" role="img" aria-label="The Vaultera loop: stake VARA, mint kVARA, post kVARA to borrow stables, buy VARA again.">
-          <div className="fw-ring" />
-          <div className="fw-glow" />
-          <div className="fw-arcs">
-            <div className="fw-arc" />
-            <div className="fw-arc" style={{ animationDelay: '-4.5s' }} />
-          </div>
-          {FLY_ARROWS_DESKTOP.map((a) => <span key={`d${a}`} className="fw-arrow" data-set="desktop" style={flyArrowStyle(a)} />)}
-          {FLY_ARROWS_MOBILE.map((a) => <span key={`m${a}`} className="fw-arrow" data-set="mobile" style={flyArrowStyle(a)} />)}
-          {FLY_NODES.map(([t, tok, pos]) => (
-            <div key={t} className="fw-node" data-pos={pos}>
-              <TokenIcon token={tok} size={22} />
-              <span>{t}</span>
+    <Section id="products" className="fx-compare">
+      <Container max={760} className="fx-compare-wrap">
+        <div className="fx-compare-in">
+          <h2 className="fx-h2">Smarter staking starts with liquidity</h2>
+          <div className="fx-ba" data-side={side}>
+            <div className="fx-ba-tabs" role="tablist">
+              <div className="fx-ba-overlay-top" aria-hidden />
+              <button type="button" role="tab" className="fx-ba-tab" data-side="before" aria-selected={side === 'before'} onClick={() => setSide('before')}>Before Vaultera</button>
+              <span className="fx-ba-knob" aria-hidden><img src={`${FX}BepIwACX380EUEqBMK5sdcQgh3k.png`} alt="" width={130} /></span>
+              <button type="button" role="tab" className="fx-ba-tab" data-side="after" aria-selected={side === 'after'} onClick={() => setSide('after')}>After Vaultera</button>
             </div>
-          ))}
-          <div className="fw-core">
-            <div className="eyebrow">each turn</div>
-            <div className="fw-core-title">more <span className="grad-text">VARA</span> bonded</div>
-          </div>
-        </div>
-        <div className="fw-steps">
-          {FLY_STEPS.map(([t, d], i) => (
-            <div key={t} className="fw-step">
-              <span className="fw-step-n">0{i + 1}</span>
-              <div>
-                <div className="fw-step-t">{t}</div>
-                <p className="fw-step-d">{d}</p>
+            <div className="fx-ba-frame">
+              <div className="fx-ba-panel">
+                <div className="fx-ba-desc">
+                  <h3>{side === 'before' ? 'Challenges of staking VARA today' : 'Smarter way to stake your VARA'}</h3>
+                  <div className="fx-ba-list">
+                    {(side === 'before' ? before : after).map((t) => <ListItem key={t} variant="lg" icon={side === 'before' ? 'x' : 'chevron'} color={side === 'after' ? '#BABABA' : undefined}>{t}</ListItem>)}
+                  </div>
+                </div>
+                <div className="fx-ba-stats">
+                  {(side === 'before' ? [['68%', 'Capital sitting idle'], ['55%', 'Missed compounding']] : [['3X Faster', 'Capital efficiency'], ['24/7', 'Exits at the live rate']]).map(([b, s]) => (
+                    <div key={b} className="fx-ba-statcard"><b>{b}</b><span>{s}</span></div>
+                  ))}
+                </div>
+                <div className="fx-ba-bg" aria-hidden><img src={`${FX}Osh2UHQcarC8mZnL6oh6gwYnbA.jpg`} alt="" /></div>
               </div>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
-    </Sec>
+      </Container>
+      <div ref={spacer} className="fx-compare-spacer" aria-hidden />
+    </Section>
   );
 }
 
-export function TokensTable() {
-  const rows: [TokenSymbol, TokenSymbol, string, string, 'accent' | 'info'][] = [
-    ['kVARA', 'VARA', 'Era staking rewards, compounded', 'Value-accruing', 'accent'],
-    ['kUSDT', 'wUSDT', 'Borrow interest from loopers', 'Vault share · 4626', 'info'],
-    ['kUSDC', 'wUSDC', 'Borrow interest from loopers', 'Vault share · 4626', 'info'],
-  ];
+/* ---------- Features bento ---------- */
+const WORDS: [string, string][] = [['Swap', '#F28778'], ['Exit', '#8AE389'], ['Loop', '#FDBB6E']];
+function FeatureBoxTitle() {
+  const [i, setI] = useState(0);
+  useEffect(() => { const t = setInterval(() => setI((x) => (x + 1) % WORDS.length), 2600); return () => clearInterval(t); }, []);
   return (
-    <Sec id="tokens" eyebrow="Token architecture" title="One prefix. Every receipt." sub="kX truthfully means “Vaultera's yield-bearing receipt for X” — for every asset, forever. No stVARA semantics stretched over stables, no collisions with gVARA or wVARA.">
-      <Bento style={{ marginTop: 44 }}>
-        <div className="ld-table-wrap">
-          <table className="ld-table">
-            <thead>
-              <tr>{['Token', 'You deposit', 'You receive', 'Yield source', 'Type'].map((h) => <th key={h} className="ld-th">{h}</th>)}</tr>
-            </thead>
-            <tbody>
-              {rows.map(([tok, dep, src, type, tone]) => (
-                <tr key={tok} className="ld-row">
-                  <td><TokenBadge token={tok} size={32} /></td>
-                  <td><TokenBadge token={dep} size={22} style={{ opacity: 0.85 }} /></td>
-                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--text-1)' }}>{tok}</td>
-                  <td style={{ fontSize: 14, color: 'var(--text-2)' }}>{src}</td>
-                  <td><Badge tone={tone} size="sm">{type}</Badge></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Bento>
-      <p style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 14 }}>Non-rebasing by design — fixed balances compose with every DEX, bridge and lending market by default.</p>
-    </Sec>
+    <div className="fx-fbt" aria-hidden>
+      {WORDS.map(([w, c], k) => (
+        <div key={w} className="fx-fbt-word" data-on={k === i} style={{ color: c }}>{w}<i>{w}</i></div>
+      ))}
+    </div>
   );
 }
 
-export function ExitPaths() {
-  const paths = [
-    { icon: 'zap', title: 'Instant', desc: 'Swap kVARA for VARA from the liquidity buffer or DEX.', rows: [['Speed', 'immediate'], ['Cost', '~0.3% + slippage'], ['Via', 'buffer → DEX']], foot: 'buffer target 5–10% of TVL' },
-    { icon: 'hourglass', title: 'Native unbond', desc: 'Burn kVARA; the protocol unbonds from validators.', rows: [['Speed', '7 days'], ['Cost', 'free'], ['Rate', 'full exchange rate']], foot: 'Vara unbonding period' },
-  ] as const;
+export function Features() {
   return (
-    <Sec eyebrow="Exits" title="Two ways out. Always.">
-      <div className="ld-grid-2" style={{ marginTop: 44 }}>
-        {paths.map((p) => (
-          <Bento key={p.title} pad={30}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <span style={{ width: 44, height: 44, borderRadius: 13, background: 'var(--accent-soft)', border: '1px solid var(--accent-line)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--tide-300)' }}>
-                {p.icon === 'zap' ? <Zap size={19} strokeWidth={1.5} /> : <Hourglass size={19} strokeWidth={1.5} />}
-              </span>
-              <h3 style={{ fontSize: 25, fontWeight: 600 }}>{p.title}</h3>
+    <Section id="features" className="fx-features">
+      <Container>
+        <div className="fx-features-head">
+          <div>
+            <PreTitle>Core features</PreTitle>
+            <h2 className="fx-h2">Everything you need to stake confidently</h2>
+          </div>
+          <div>
+            <p className="fx-body">Protocol-grade tooling designed for solo stakers and treasuries managing large VARA positions.</p>
+            <BtnIcon variant="dark" to="/features">View all features</BtnIcon>
+          </div>
+        </div>
+        <div className="fx-features-grid">
+          <div className="fx-features-left">
+            <div className="fx-fcard">
+              <h3>Conservative risk parameters</h3>
+              <img src={`${FX}wXWMCe97v6E9fhERLabXGgt0Go.png`} alt="" style={{ maxWidth: 150, position: 'relative', zIndex: 1 }} />
+              <div className="fx-fcard-badges">
+                <Badge variant="white">50% max LTV</Badge>
+                <Badge variant="white">Insurance fund first</Badge>
+                <Badge variant="white">7-day slash defer</Badge>
+              </div>
             </div>
-            <p style={{ fontSize: 14.5, color: 'var(--text-2)', margin: '14px 0 16px', lineHeight: 1.65 }}>{p.desc}</p>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              {p.rows.map(([k, v]) => (
-                <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid var(--line-1)', fontSize: 13.5 }}>
-                  <span style={{ color: 'var(--text-3)' }}>{k}</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-1)' }}>{v}</span>
-                </div>
-              ))}
+            <div className="fx-fcard">
+              <h3>A rate that only rises</h3>
+              <img src={`${FX}G7W3uXGEWJ2M7xixcWnVJPdzxEc.svg`} alt="" style={{ width: '100%', position: 'relative', zIndex: 1 }} />
+              <BgItem src={`${FX}IZgCL46gW5tJW2TUtUKnT2MFgMs.jpg`} overlay={0.8} />
             </div>
-            <div style={{ marginTop: 16 }}><Badge tone="neutral" size="sm">{p.foot}</Badge></div>
-          </Bento>
-        ))}
-      </div>
-      <p style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 14 }}>When the buffer drains, instant exits route to the DEX. Native unbond always works.</p>
-    </Sec>
+            <div className="fx-fcard fx-fcard-3">
+              <div className="fx-fcard-top">
+                <h3>Portfolio in one view</h3>
+                <p>See every position at once, with the live redemption rate, era rewards and vault share prices in one place.</p>
+              </div>
+              <div className="fx-fcard-shots">
+                <img src={`${FX}LLeScfWulZWyA0jZhMBwmQgQHA.svg`} alt="" style={{ width: 250 }} />
+                <img src={`${FX}LP5Ny6NdFTClX39IhTGUIolDygE.svg`} alt="" style={{ width: 300 }} />
+              </div>
+              <BgItem src={`${FX}subirXJz7lXrSNejZPxoXXA90Ik.jpg`} overlay={0.9} />
+            </div>
+          </div>
+          <div className="fx-features-right">
+            <div className="fx-fcard fx-fcard-dark">
+              <h3>Every exit path</h3>
+              <FeatureBoxTitle />
+              <p>Swap instantly, unbond natively, or loop into stables.</p>
+            </div>
+            <div className="fx-fcard" style={{ minHeight: 0 }}>
+              <h3>Smart alerts</h3>
+              <div className="fx-alert">
+                <img src={`${FX}e7N84L0vlZQpYYqGdndB2EPeKk.svg`} alt="" style={{ width: '100%', top: 0, zIndex: 3 }} />
+                <img src={`${FX}qRR37bNghXttLizbZI0gYViJtDE.svg`} alt="" style={{ width: '86%', top: 44, zIndex: 2 }} />
+                <img src={`${FX}KeTabRzcIFVfk1ymsNMeghVPnM.svg`} alt="" style={{ width: '72%', top: 76, zIndex: 1 }} />
+                <img src={`${FX}dIhxLbN1GBZu7TFHjssn0JUI4kY.png`} alt="" className="fx-alert-bell" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </Section>
   );
 }
+
+/* ---------- Platform overview ---------- */
+export function Overview() {
+  return (
+    <Section className="fx-overview">
+      <Container>
+        <div className="fx-overview-content">
+          <div className="fx-overview-top">
+            <div className="fx-top">
+              <PreTitle>Platform overview</PreTitle>
+              <h2 className="fx-h2 fx-center">See your staking in action</h2>
+              <p className="fx-body fx-center">Explore a live dashboard that brings your stake, vault positions and unbonding queue together in one clear view.</p>
+            </div>
+            <div className="fx-buttons">
+              <BtnIcon to="/features">Explore features</BtnIcon>
+              <Btn variant="dark" to="/app">Try the live demo</Btn>
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30, width: '100%' }}>
+            <div className="fx-overview-shot"><div><img src={`${FX}app-overview.jpg`} alt="The Vaultera vaults dashboard" width={1188} height={720} /></div></div>
+            <div className="fx-overview-cards">
+              <OverviewCard icon={<Rocket size={20} strokeWidth={2} />} lead="All your positions in one place:">Stake, vault shares and unbonding queue together in one clear, unified view.</OverviewCard>
+              <OverviewCard icon={<Zap size={20} strokeWidth={2} />} lead="Make progress faster:">One transaction to stake, one to exit, with no claiming and no waiting on rewards.</OverviewCard>
+              <OverviewCard icon={<Lightbulb size={20} strokeWidth={2} />} lead="Built for better focus:">A clean interface that keeps the rate front and centre and everything else simple.</OverviewCard>
+            </div>
+          </div>
+        </div>
+      </Container>
+      <BgItem src={`${FX}sGvx8VOXGYVGBocxGp5Wy6GfeA.jpg`} top bottom />
+    </Section>
+  );
+}
+
+/* ---------- How it works ---------- */
+const STEPS: [string, string, string][] = [
+  ['ykcQXfkRR4KTqMLXTbg0T9PB8zk.png', 'Connect your wallet', 'Link any Substrate wallet in one click. Your keys never leave it.'],
+  ['BRYQbNFP21XSdbOpg2tEs4MO0aY.png', 'Stake and mint kVARA', 'Deposit VARA and receive kVARA at the live rate in a single transaction.'],
+  ['nDs3OgbLpR77rcn1GvmpOSivzdI.png', 'Earn every era', 'Rewards compound into the rate automatically. Exit instantly or unbond natively.'],
+];
+export function Steps() {
+  const [i, setI] = useState(0);
+  return (
+    <Section id="how-it-works" className="fx-steps">
+      <Container>
+        <div className="fx-steps-content">
+          <div className="fx-steps-left">
+            <div className="fx-top-left">
+              <PreTitle>How it works</PreTitle>
+              <h2 className="fx-h2">Start staking in minutes</h2>
+              <p className="fx-body">Connect a wallet, stake VARA, and let the redemption rate do the rest while you stay liquid.</p>
+            </div>
+            <div className="fx-steps-stats">
+              <StatItem title="100%" description="Non-custodial, on-chain protocol" />
+              <StatItem title="2 Minutes" description="From connect to first stake" />
+            </div>
+          </div>
+          <div className="fx-workflow">
+            <StepSwitcher labels={['Step 01', 'Step 02', 'Step 03']} active={i} onChange={setI} />
+            <div className="fx-workflow-frame">
+              <div className="fx-workflow-panel">
+                {STEPS.map(([img, t, d], k) => (
+                  <div key={t} className="fx-workflow-step" data-on={k === i}>
+                    <img src={FX + img} alt="" />
+                    <div className="fx-workflow-desc"><h4>{t}</h4><p className="fx-body">{d}</p></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
+/* ---------- Security ---------- */
+export function Security() {
+  return (
+    <Section id="security">
+      <Container>
+        <div className="fx-split">
+          <div className="fx-imgpanel fx-imgpanel-wide"><img src={`${FX}ShWpChwHKJXjkAo8ZPOmvydAuFE.png`} alt="" /></div>
+          <div className="fx-split-col fx-split-narrow">
+            <div className="fx-top-left">
+              <PreTitle>Security &amp; compliance</PreTitle>
+              <h2 className="fx-h2">Your stake is protected at every level</h2>
+              <div style={{ marginTop: 10 }}><BtnIcon variant="dark" to="/app">Get started now</BtnIcon></div>
+            </div>
+            <div className="fx-split-list">
+              <ListItem>Insurance fund fills before the treasury</ListItem>
+              <ListItem>Curated, screened validator set</ListItem>
+              <ListItem>Slashes deferred 7 days for governance</ListItem>
+              <ListItem>Independent audits and a public bug bounty</ListItem>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
+/* ---------- Use cases ---------- */
+const CASES: [string, string, string, string, string][] = [
+  ['Individual stakers', 'Stake any amount, hold kVARA, and let the rate compound without claiming or guesswork.', '+32% Faster', 'Capital back to work with instant exits', 'l4todGvJ7jL3WhxngE8F0mr2mks.jpg'],
+  ['DAOs and treasuries', 'Keep the treasury staked and liquid at the same time, with positions visible to everyone.', 'Real-time', 'Reporting across every position', 'rF4nkbqTtccZBPQrR1TG1yKqD8.jpg'],
+  ['Validators', 'Grow a curated nomination pool with transparent commission, uptime and slash history.', '10+', 'Validators nominated from one pool', 'Rl52kJV49NxXXh2BR2NJhjJuN7I.jpg'],
+  ['Loopers', 'Post kVARA as collateral, borrow stables, and amplify staking yield with conservative LTVs.', 'Up to 2X', 'Effective stake on the same VARA', 'nPSRrYomcOALmLPJavAfjBIboI.jpg'],
+];
+const PHOTOS = ['QJxW9eYj0OFH6UvNuY4WNkVNJ0.jpg', 'ir92iMEO3JaF66SNrwrpEtYCY.jpg', 'nkS8pAWPKcD8U7ncGVFOqXVV0o.jpg', 'omPOmfMdMLLw0U7G41FgZY7Cfmg.jpg'];
+export function UseCases() {
+  return (
+    <Section id="use-cases" className="fx-usecases">
+      <div className="fx-top">
+        <PreTitle>Use cases</PreTitle>
+        <h2 className="fx-h2 fx-center">Who this protocol is built for</h2>
+      </div>
+      <div className="fx-usecases-ticker">
+        <Ticker gap={10} duration={60}>
+          {CASES.map(([t, d, st, sd, bg], k) => [
+            <img key={`p${k}`} src={FX + PHOTOS[k]} alt="" className="fx-usecase-photo" />,
+            <UseCaseCard key={t} title={t} description={d} statsTitle={st} statsDescription={sd} bg={FX + bg} />,
+          ])}
+        </Ticker>
+      </div>
+      <div className="fx-usecases-bottom">
+        <div className="fx-badges">
+          <Badge>12,400+ Holders</Badge><Badge>4.9 Rating</Badge><Badge>Real-time rate</Badge><Badge>Audited &amp; insured</Badge>
+        </div>
+        <FounderCard content="“We built Vaultera to remove the lock-up from staking and give people a receipt token that composes with everything.”" avatar={`${FX}7Z2d6WeDiCpoz0B6ookMTPOFAU.jpg`} jobTitle="Founder &amp; CEO" />
+      </div>
+    </Section>
+  );
+}
+
+/* ---------- Integrations ---------- */
+const RING: ReactNode[] = [
+  <TokenIcon token="VARA" size={32} />, <Wallet size={30} color="#406AE4" />, <TokenIcon token="kUSDT" size={32} />, <ArrowLeftRight size={30} color="#10B981" />,
+  <TokenIcon token="kUSDC" size={32} />, <Boxes size={30} color="#FF8B06" />, <Link2 size={30} color="#5290F4" />, <Repeat size={30} color="#F28778" />,
+  <TokenIcon token="kVARA" size={32} />, <Globe size={30} color="#3B82F6" />, <TokenIcon token="USDT" size={32} />, <Layers size={30} color="#1D1D1D" />,
+  <TokenIcon token="USDC" size={32} />, <Coins size={30} color="#FDBB6E" />, <Lock size={30} color="#F51C23" />, <Sparkles size={30} color="#8AE389" />,
+];
+export function Integrations() {
+  return (
+    <Section id="integrations">
+      <Container>
+        <div className="fx-integrations-card">
+          <div className="fx-integrations-top">
+            <div className="fx-top">
+              <PreTitle variant="white">Integrations</PreTitle>
+              <h2 className="fx-h2 fx-center">Connect with the tools you already use</h2>
+              <p className="fx-body fx-center">kVARA is a plain, non-rebasing token, so it drops into every wallet, DEX, bridge and lending market on Vara.</p>
+            </div>
+            <BtnIcon href="https://wiki.vara.network/" newTab>Explore the ecosystem</BtnIcon>
+          </div>
+          <div className="fx-ring-wrap">
+            <div className="fx-ring" aria-hidden>
+              {RING.map((ic, k) => <span key={k} className="fx-ring-item" style={{ '--a': `${k * 22.5}deg` } as React.CSSProperties}><span>{ic}</span></span>)}
+            </div>
+            <div className="fx-ring-center">
+              <span className="fx-ring-core"><img src={`${FX}4LS9gC9h4W4WbsmhQmoxQ7DsncQ.svg`} alt="" style={{ height: 40 }} /></span>
+              <h3 className="fx-h6">Composable with the whole Vara ecosystem and growing</h3>
+            </div>
+          </div>
+          <img src={`${FX}XlxsE037ei7LGhxYPQDC3jctO9A.png`} alt="" className="fx-integrations-bg" aria-hidden />
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
+/* ---------- Stats ---------- */
+const STATS: { pre: string; title: string; desc: string; icon: ReactNode; variant: 'default' | 'dark' | 'primary'; pos: React.CSSProperties }[] = [
+  { pre: 'Active stakers', title: '12,400+', desc: 'Wallets, pools and vaults holding kVARA.', icon: <Users size={20} />, variant: 'default', pos: { left: 50, top: 130 } },
+  { pre: 'VARA staked', title: '8.6M+', desc: 'Bonded across a curated validator set.', icon: <Coins size={20} />, variant: 'dark', pos: { right: 0, top: 120 } },
+  { pre: 'Rewards paid', title: '940K', desc: 'VARA compounded into the rate, era by era.', icon: <Sparkles size={20} />, variant: 'dark', pos: { left: 20, top: 620 } },
+  { pre: 'Validators covered', title: '120+', desc: 'Screened for commission, uptime and history.', icon: <Globe size={20} />, variant: 'primary', pos: { left: 430, top: 680 } },
+  { pre: 'Protocol uptime', title: '99.9%', desc: 'Reliable access to your stake and exits.', icon: <Timer size={20} />, variant: 'default', pos: { right: 0, top: 590 } },
+];
+export function Stats() {
+  return (
+    <Section className="fx-stats">
+      <Container>
+        <div className="fx-stats-board">
+          <div className="fx-top">
+            <PreTitle>Protocol stats</PreTitle>
+            <h2 className="fx-h2 fx-center">Powering smarter staking decisions</h2>
+            <p className="fx-body fx-center">Real-time rates, deep exits and a conservative risk engine working together.</p>
+          </div>
+          <div className="fx-stats-grid" style={{ display: 'contents' }}>
+            {STATS.map((s) => <StatLGCard key={s.pre} preTitle={s.pre} title={s.title} description={s.desc} icon={s.icon} variant={s.variant} style={s.pos} />)}
+          </div>
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
+/* ---------- Testimonials ---------- */
+const TESTI: [string, string, string, string][] = [
+  ['Vaultera let me keep staking while I actually use my VARA. The rate is transparent and the exits just work.', '7Z2d6WeDiCpoz0B6ookMTPOFAU.jpg', 'David Miller', 'Individual staker'],
+  ['Managing a treasury position is far easier now. kVARA sits in our vault and the reporting saves us hours every week.', 'hYfCvJ3IVdEznEOwIQiiAxWOsPY.jpg', 'Sarah Thompson', 'DAO treasurer'],
+  ['Instant exits through the buffer mean I can react to the market the moment it moves. It is part of my daily workflow.', '622M5cyJBdKPIK1fPnBlo3qONk.jpg', 'Michael Chen', 'Active trader'],
+  ['The vault dashboard makes the share price and utilization far easier to interpret than any other Vara protocol.', 'W13V3WO2YwDah4yBxCcZc70Es.jpg', 'Emily Rodriguez', 'DeFi analyst'],
+  ['Clear parameters, an insurance fund that fills first, and a rate that only rises. That is exactly what I want to nominate into.', '5O8P63EQwkFO1m5OTR4jsw7hI8.jpg', 'Daniel Carter', 'Validator operator'],
+];
+export function Testimonials() {
+  return (
+    <Section className="fx-testimonials">
+      <Container>
+        <div className="fx-testimonials-head">
+          <div>
+            <h2 className="fx-h2">What stakers say about the protocol</h2>
+            <div className="fx-hero-list" style={{ justifyContent: 'flex-start' }}>
+              <ListItem variant="fit" icon="star">4.9/5 Rating</ListItem><span className="fx-line" />
+              <ListItem variant="fit" icon="shield">75+ Testimonials</ListItem><span className="fx-line" />
+              <ListItem variant="fit" icon="zap">12K+ Community</ListItem>
+            </div>
+          </div>
+          <div><BtnIcon variant="dark" to="/app">Get started today</BtnIcon></div>
+        </div>
+      </Container>
+      <div className="fx-testimonials-ticker">
+        <Ticker gap={50} duration={70} align="end">
+          {TESTI.map(([c, av, n, j]) => <TestimonialItem key={n} content={c} avatar={FX + av} name={n} jobTitle={j} />)}
+        </Ticker>
+      </div>
+      <BgItem src={`${FX}cQBpXWVe2IileA0HCzW5W4uvgY.jpg`} top bottom height={420} />
+    </Section>
+  );
+}
+
+export { ShieldCheck, Bell };

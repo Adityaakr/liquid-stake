@@ -23,7 +23,7 @@ export function Meter({ value = 0, max = 100, label, showValue = true, marker, t
           {showValue && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-xs)', color: 'var(--text-2)' }}>{Math.round(pct * 10) / 10}%</span>}
         </div>
       )}
-      <div style={{ position: 'relative', height, borderRadius: 99, background: 'var(--ink-700)', overflow: 'visible' }}>
+      <div style={{ position: 'relative', height, borderRadius: 99, background: 'var(--fx-mist)', overflow: 'visible' }}>
         <div style={{ position: 'absolute', inset: 0, borderRadius: 99, overflow: 'hidden' }}>
           <div style={{ width: `${pct}%`, height: '100%', borderRadius: 99, background: fill, transition: 'width var(--dur-3) var(--ease-out)' }} />
         </div>

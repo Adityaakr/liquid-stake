@@ -11,7 +11,7 @@ export function Row({ k, v, accent }: { k: ReactNode; v: ReactNode; accent?: boo
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', fontSize: 13.5, borderTop: '1px solid var(--line-1)', gap: 12 }}>
       <span style={{ color: 'var(--text-3)' }}>{k}</span>
-      <span style={{ fontFamily: 'var(--font-mono)', color: accent ? 'var(--tide-300)' : 'var(--text-1)', textAlign: 'right' }}>{v}</span>
+      <span style={{ fontFamily: 'var(--font-mono)', color: accent ? 'var(--fx-indigo)' : 'var(--text-1)', textAlign: 'right', fontWeight: 600 }}>{v}</span>
     </div>
   );
 }
@@ -19,13 +19,13 @@ export function Row({ k, v, accent }: { k: ReactNode; v: ReactNode; accent?: boo
 export function IRow({ icon, k, v, accent, loading }: { icon: ReactNode; k: ReactNode; v: ReactNode; accent?: boolean; loading?: boolean }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 0' }}>
-      <span style={{ width: 32, height: 32, minWidth: 32, borderRadius: 99, background: 'var(--surface-raised)', border: '1px solid var(--line-1)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-2)' }}>{icon}</span>
+      <span style={{ width: 32, height: 32, minWidth: 32, borderRadius: 99, background: '#fff', border: '1px solid var(--fx-mist)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-2)' }}>{icon}</span>
       <span style={{ fontSize: 14, color: 'var(--text-2)' }}>{k}</span>
-      <span className={loading ? 'skeleton' : undefined} style={{ marginLeft: 'auto', fontFamily: 'var(--font-mono)', fontSize: 15, color: accent ? 'var(--tide-300)' : 'var(--text-1)', minWidth: loading ? 80 : undefined, textAlign: 'right' }}>{v}</span>
+      <span className={loading ? 'skeleton' : undefined} style={{ marginLeft: 'auto', fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: 15, color: accent ? 'var(--fx-indigo)' : 'var(--text-1)', minWidth: loading ? 80 : undefined, textAlign: 'right' }}>{v}</span>
     </div>
   );
 }
 
 export function Eyebrow({ children }: { children: ReactNode }) {
-  return <div className="eyebrow" style={{ fontSize: 10.5 }}>{children}</div>;
+  return <div className="eyebrow">{children}</div>;
 }
