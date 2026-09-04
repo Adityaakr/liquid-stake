@@ -1,5 +1,5 @@
 import { TokenIcon } from '@/ui';
-import { Btn, BtnIcon, Container, ListItem, PreTitle, Ticker } from './fx';
+import { Btn, BtnIcon, Container, ListItem, PreTitle, Shot, Ticker } from './fx';
 
 const FX = '/fx/';
 const CLOUDS: [string, number, { left?: number | string; right?: number | string; top: number }][] = [
@@ -37,7 +37,7 @@ export function Hero() {
             </div>
           </div>
           <div className="fx-hero-bottom">
-            <div className="fx-hero-shot"><img src={`${FX}app-hero.jpg`} alt="The Vaultera staking dashboard" width={1060} height={640} /></div>
+            <div className="fx-hero-shot"><Shot name="app-hero" alt="The Vaultera staking dashboard" width={1400} height={846} mobileHeight={760} /></div>
           </div>
         </div>
       </Container>

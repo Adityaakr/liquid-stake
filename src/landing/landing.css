@@ -99,7 +99,7 @@
 .fx-hero-list .fx-line{width:1px;align-self:stretch;background:var(--fx-jet);opacity:.2}
 .fx-hero-bottom{width:100%;max-width:1060px;display:flex;justify-content:center}
 .fx-hero-shot{width:100%;border-radius:20px;border:1px solid var(--fx-silver);overflow:hidden;background:#fff;box-shadow:0 30px 80px -30px rgba(29,29,29,.35)}
-.fx-hero-shot img{width:100%;display:block}
+.fx-hero-shot img,.fx-overview-shot img,.fx-phero-shot img{width:100%;height:auto;display:block}
 .fx-cloud{position:absolute;pointer-events:none;z-index:1;opacity:.95}
 .fx-hero-deco{position:absolute;left:50%;transform:translateX(-50%);width:1220px;max-width:100%;top:0;bottom:0;overflow:hidden;pointer-events:none;z-index:1}
 .fx-hero-deco>div{position:absolute;left:0;right:0;top:0;height:98%;display:flex;align-items:flex-end;justify-content:center;padding-bottom:200px;overflow:hidden}
@@ -556,6 +556,9 @@
   .fx-phero-stats{gap:20px}
   .fx-caps-grid,.fx-stepcards,.fx-integrations-grid{grid-template-columns:1fr}
   .fx-overview-shot{padding:4px}
+  .fx-hero-shot,.fx-phero-shot{border-radius:24px;max-width:420px;margin:0 auto}
+  .fx-overview-shot{max-width:420px;margin:0 auto}
+  .fx-hero-bottom{max-width:100%}
   .fx-features-head h2{max-width:none}
   .fx-nav-wrap{padding:12px 0}
   .fx-nav{padding:0 12px}

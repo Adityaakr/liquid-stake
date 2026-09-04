@@ -4,7 +4,7 @@ import './landing.css';
 import { LandingNav } from './Nav';
 import { Clients } from './Hero';
 import { Footer } from './Closing';
-import { BgItem, BtnIcon, CapabilityCard, Container, IntegrationCard, ListItem, PreTitle, Section, StatItem, StepCard } from './fx';
+import { BgItem, BtnIcon, CapabilityCard, Container, IntegrationCard, ListItem, PreTitle, Section, Shot, StatItem, StepCard } from './fx';
 
 const FX = '/fx/';
 
@@ -28,7 +28,7 @@ export function FeaturesPage() {
                 </div>
                 <BtnIcon to="/app">Start staking now</BtnIcon>
               </div>
-              <div className="fx-phero-shot"><img src={`${FX}app-portfolio.jpg`} alt="The Vaultera portfolio view" width={1200} height={760} /></div>
+              <div className="fx-phero-shot"><Shot name="app-portfolio" alt="The Vaultera portfolio view" width={1400} height={800} mobileHeight={700} /></div>
             </div>
           </Container>
           {[['Rorgfh4qpKNsZyFzGNQ9wt5C0i4.png', 350, { left: -140, top: 40 }], ['fLN6Wx8BsWTV2MkQDeC8mB2BQKA.png', 240, { right: 40, top: 100 }], ['lSZuKptayJeB4Xcw10qjE7IisQw.png', 350, { right: -160, top: 330 }]].map(([f, h, pos]) => (

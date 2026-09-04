@@ -222,6 +222,16 @@ export function FaqsCta({ avatars }: { avatars: string[] }) {
   );
 }
 
+/** Dashboard screenshot with a phone-layout capture served below the phone breakpoint. */
+export function Shot({ name, alt, width, height, mobileHeight }: { name: string; alt: string; width: number; height: number; mobileHeight: number }) {
+  return (
+    <picture>
+      <source media="(max-width: 809px)" srcSet={`/fx/${name}-m.jpg`} width={780} height={mobileHeight * 2} />
+      <img src={`/fx/${name}.jpg`} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
+    </picture>
+  );
+}
+
 /* ---------- motion ---------- */
 /** Infinite horizontal marquee: duplicates its children and scrolls the track. */
 export function Ticker({ children, gap = 70, duration = 40, align = 'center', reverse }: { children: ReactNode; gap?: number; duration?: number; align?: 'center' | 'end'; reverse?: boolean }) {

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowLeftRight, Bell, Boxes, Coins, Globe, Layers, Lightbulb, Link2, Lock, Repeat, Rocket, ShieldCheck, Sparkles, Timer, Users, Wallet, Zap } from 'lucide-react';
 import { TokenIcon } from '@/ui';
-import { Badge, BgItem, Btn, BtnIcon, Container, FounderCard, ListItem, OverviewCard, PreTitle, Section, StatItem, StatLGCard, StepSwitcher, TestimonialItem, Ticker, UseCaseCard } from './fx';
+import { Badge, BgItem, Btn, BtnIcon, Container, FounderCard, ListItem, OverviewCard, PreTitle, Section, Shot, StatItem, StatLGCard, StepSwitcher, TestimonialItem, Ticker, UseCaseCard } from './fx';
 
 const FX = '/fx/';
 
@@ -150,7 +150,7 @@ export function Overview() {
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30, width: '100%' }}>
-            <div className="fx-overview-shot"><div><img src={`${FX}app-overview.jpg`} alt="The Vaultera vaults dashboard" width={1188} height={720} /></div></div>
+            <div className="fx-overview-shot"><div><Shot name="app-overview" alt="The Vaultera vaults dashboard" width={1400} height={846} mobileHeight={760} /></div></div>
             <div className="fx-overview-cards">
               <OverviewCard icon={<Rocket size={20} strokeWidth={2} />} lead="All your positions in one place:">Stake, vault shares and unbonding queue together in one clear, unified view.</OverviewCard>
               <OverviewCard icon={<Zap size={20} strokeWidth={2} />} lead="Make progress faster:">One transaction to stake, one to exit, with no claiming and no waiting on rewards.</OverviewCard>
