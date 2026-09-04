@@ -116,7 +116,9 @@
 .fx-clients-fade-l{left:0;background:linear-gradient(90deg,#fff,rgba(255,255,255,0))}
 .fx-clients-fade-r{right:0;background:linear-gradient(270deg,#fff,rgba(255,255,255,0))}
 .fx-clients-line{position:absolute;left:30px;right:30px;bottom:0;height:1px;background:linear-gradient(90deg,rgba(255,255,255,0),var(--fx-mist) 20%,var(--fx-mist) 80%,rgba(255,255,255,0))}
-.fx-clientlogo{height:20px;width:auto;opacity:.9;flex-shrink:0}
+.fx-clientsoon{display:inline-flex;align-items:center;gap:10px;height:20px;white-space:nowrap;font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--fx-silver);letter-spacing:-0.01em;flex-shrink:0}
+.fx-clientsoon>span{color:var(--fx-slate)}
+.fx-clientsoon::after{content:'';display:none}
 
 /* ticker */
 .fx-ticker{display:flex;overflow:hidden;width:100%;gap:var(--gap);mask-image:none}

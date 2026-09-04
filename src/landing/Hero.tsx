@@ -7,7 +7,7 @@ const CLOUDS: [string, number, { left?: number | string; right?: number | string
   ['fLN6Wx8BsWTV2MkQDeC8mB2BQKA.png', 240, { right: 40, top: 120 }],
   ['lSZuKptayJeB4Xcw10qjE7IisQw.png', 350, { right: -160, top: 330 }],
 ];
-const LOGOS = ['zzy3Hy80EnMAcFDNkN3NKywrws', 'ttAkZdMWSVdnEFWOMAGPd02naww', 'yGSAR2BPJR4R5RavxHMin7aaQ', 'Q4NOfouamWGgk3UFlEHpVqoh1g', '5nGuSZAwRT4NRfDDIZujzQtZZWE', 'DBUwDF8TyuYlJjEnFZLTmnkqZlc', 'S6mPNLdVr3HXs5RKDjK6oOoGA8s', 'IGCk8ybXXrx7eiHCx1ShUDNZM', 'i3wMGgeQf62mFsJKEN8286Rro', 'xY23GtEZUG32O0u9umhbJ1nvk', '4VQV9nkj7FeFolOWQKOgtWtu5G0'];
+const PARTNERS = ['Validators', 'DEXs', 'Wallets', 'Bridges', 'DAOs', 'Lending markets'];
 
 export function Hero() {
   return (
@@ -58,7 +58,7 @@ export function Clients() {
           <div className="fx-clients-fade fx-clients-fade-r" aria-hidden />
           <div className="fx-clients-pre"><PreTitle>Trusted by validators and DeFi teams on Vara</PreTitle></div>
           <Ticker gap={70} duration={45}>
-            {LOGOS.map((l) => <img key={l} src={`${FX}${l}.svg`} alt="Partner logo" className="fx-clientlogo" />)}
+            {PARTNERS.map((p) => <span key={p} className="fx-clientsoon"><span>{p}</span>coming soon</span>)}
           </Ticker>
           <div className="fx-clients-line" aria-hidden />
         </div>
